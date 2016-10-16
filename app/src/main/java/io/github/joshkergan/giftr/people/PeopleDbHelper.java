@@ -18,8 +18,8 @@ public final class PeopleDbHelper extends SQLiteOpenHelper{
 	private static final String DATA_TYPE = " BLOB";
 	private static final String SQL_CREATE_ENTRIES =
 			"CREATE TABLE " + PeopleContract.PeopleEntry.TABLE_NAME +
-					" (" + PeopleContract.PeopleEntry._ID + " INTEGER PRIMARY KEY," +
-					PeopleContract.PeopleEntry.COLUMN_NAME_PERSON + TEXT_TYPE + " ," +
+					" (" + PeopleContract.PeopleEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+					PeopleContract.PeopleEntry.COLUMN_NAME_PERSON + TEXT_TYPE + ", " +
 					PeopleContract.PeopleEntry.COLUMN_NAME_PHOTO + DATA_TYPE + " )";
 
 	public PeopleDbHelper(Context context) {

@@ -20,7 +20,6 @@ public final class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.View
 
 	private final static String[] projection = {
 			PeopleContract.PeopleEntry._ID,
-			PeopleContract.PeopleEntry._COUNT,
 			PeopleContract.PeopleEntry.COLUMN_NAME_PERSON,
 			PeopleContract.PeopleEntry.COLUMN_NAME_PHOTO
 	};
