@@ -8,19 +8,20 @@
               android:orientation="vertical" >
 
     <de.hdodenhof.circleimageview.CircleImageView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/friend_image"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="96dp"
         android:layout_height="96dp"
         android:src="@drawable/sample_person"
-        app:civ_border_width="2dp"
-        app:civ_border_color="#FF000000"/>
+        app:civ_border_color="#FF000000"
+        app:civ_border_width="2dp"/>
 
     <TextView
+        android:id="@+id/friend_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:maxLines="1"
-        android:text="Mario"
         android:textColor="#d9000000"
         android:textSize="16sp" />
 

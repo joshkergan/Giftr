@@ -1,21 +1,24 @@
 package io.github.joshkergan.giftr;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import io.github.joshkergan.giftr.people.PeopleAdapter;
+import io.github.joshkergan.giftr.people.PeopleDbHelper;
 
 public class PeopleActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
@@ -45,10 +48,15 @@ public class PeopleActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+	    // Set up Database cursor for People
+	    PeopleDbHelper pDbHelper = new PeopleDbHelper(getApplicationContext());
+
+	    SQLiteDatabase peopleDb = pDbHelper.getReadableDatabase();
+
         RecyclerView peopleList = (RecyclerView) findViewById(R.id.list_people);
         peopleList.setHasFixedSize(true);
         peopleList.setLayoutManager(new GridLayoutManager(this, 3));
-        peopleList.setAdapter(new PeopleAdapter());
+	    peopleList.setAdapter(new PeopleAdapter(peopleDb));
     }
 
     @Override
@@ -85,7 +93,7 @@ public class PeopleActivity extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
