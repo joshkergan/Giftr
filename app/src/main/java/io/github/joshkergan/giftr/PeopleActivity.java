@@ -1,11 +1,12 @@
 package io.github.joshkergan.giftr;
 
-import android.database.sqlite.SQLiteDatabase;
+import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -16,57 +17,85 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import io.github.joshkergan.giftr.people.PeopleAdapter;
 import io.github.joshkergan.giftr.people.PeopleDbHelper;
 
 public class PeopleActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_people);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+	public static PeopleDbHelper pDbHelper;
+	private boolean addPersonActive = false;
+	private View activityView;
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener(){
-            @Override
+	@Override
+	protected void onCreate(@Nullable Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		activityView = getLayoutInflater().inflate(R.layout.activity_people, null);
+		setContentView(activityView);
+		final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+		final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+		final RecyclerView peopleList = (RecyclerView) findViewById(R.id.list_people);
+		final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+		setSupportActionBar(toolbar);
+		pDbHelper = new PeopleDbHelper(this);
+
+		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+		fab.setOnClickListener(new View.OnClickListener(){
+			@Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+	            final View addPerson = getLayoutInflater().inflate(R.layout.add_person, null);
+	            setContentView(addPerson);
+	            addPersonActive = true;
+	            final Button personCreateButton = (Button) findViewById(R.id.person_create_button);
+	            personCreateButton.setOnClickListener(new View.OnClickListener(){
+		            @Override
+		            public void onClick(View v) {
+			            // save person into db
+			            TextView nameView = (TextView) addPerson.findViewById(R.id.add_person_name);
+			            CircleImageView personImageView = (CircleImageView) addPerson.findViewById(R.id.friend_image);
+			            pDbHelper.createPerson(
+					            pDbHelper.getWritableDatabase(),
+					            nameView.getText().toString(),
+					            ((BitmapDrawable) personImageView.getDrawable()).getBitmap()
+			            );
+			            setContentView(activityView);
+			            addPersonActive = false;
+		            }
+	            });
             }
         });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
+		ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+				this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+		drawer.addDrawerListener(toggle);
+		toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+		navigationView.inflateHeaderView(R.layout.nav_header_people);
+		navigationView.setNavigationItemSelectedListener(this);
 
-	    // Set up Database cursor for People
-	    PeopleDbHelper pDbHelper = new PeopleDbHelper(getApplicationContext());
 
-	    SQLiteDatabase peopleDb = pDbHelper.getReadableDatabase();
-
-        RecyclerView peopleList = (RecyclerView) findViewById(R.id.list_people);
         peopleList.setHasFixedSize(true);
-        peopleList.setLayoutManager(new GridLayoutManager(this, 3));
-	    peopleList.setAdapter(new PeopleAdapter(peopleDb));
-    }
+		peopleList.setLayoutManager(new GridLayoutManager(this, 2));
+		peopleList.setAdapter(new PeopleAdapter(pDbHelper.getReadableDatabase()));
+	}
 
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)){
             drawer.closeDrawer(GravityCompat.START);
-        }else{
-            super.onBackPressed();
+	        return;
         }
+	    if (addPersonActive){
+		    setContentView(activityView);
+		    return;
+	    }
+	    super.onBackPressed();
     }
 
     @Override
@@ -98,11 +127,12 @@ public class PeopleActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_items){
-            // Handle the camera action
-        }else if (id == R.id.nav_people){
-
+	        // Handle navigating to items activity
+	        Intent itemsIntent = new Intent(this, ItemsActivity.class);
+	        startActivity(itemsIntent);
         }else if (id == R.id.nav_settings){
-
+	        Intent settingsIntent = new Intent(this, SettingsActivity.class);
+	        startActivity(settingsIntent);
         }else if (id == R.id.nav_send){
 
         }

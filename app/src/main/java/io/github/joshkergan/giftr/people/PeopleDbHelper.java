@@ -1,8 +1,12 @@
 package io.github.joshkergan.giftr.people;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
+
+import java.io.ByteArrayOutputStream;
 
 /**
  * Created by Josh on 16/10/2016.
@@ -22,6 +26,10 @@ public final class PeopleDbHelper extends SQLiteOpenHelper{
 					PeopleContract.PeopleEntry.COLUMN_NAME_PERSON + TEXT_TYPE + ", " +
 					PeopleContract.PeopleEntry.COLUMN_NAME_PHOTO + DATA_TYPE + " )";
 
+	private static final String SQL_INSERT_PERSON =
+			PeopleContract.PeopleEntry.COLUMN_NAME_PERSON + ", " +
+					PeopleContract.PeopleEntry.COLUMN_NAME_PHOTO;
+
 	public PeopleDbHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
@@ -35,5 +43,19 @@ public final class PeopleDbHelper extends SQLiteOpenHelper{
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		// Logic for updating the table schema should go here. It will probably be ugly
 		// spaghetti code.
+	}
+
+	public void createPerson(SQLiteDatabase db, String name, Bitmap image) {
+		ContentValues personValues = new ContentValues();
+		personValues.put(PeopleContract.PeopleEntry.COLUMN_NAME_PERSON, name);
+		if (image == null){
+			personValues.putNull(PeopleContract.PeopleEntry.COLUMN_NAME_PHOTO);
+		}else{
+			ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+			image.compress(Bitmap.CompressFormat.PNG, 100, byteStream);
+			personValues.put(PeopleContract.PeopleEntry.COLUMN_NAME_PHOTO, byteStream.toByteArray());
+
+		}
+		db.insert(PeopleContract.PeopleEntry.TABLE_NAME, null, personValues);
 	}
 }
