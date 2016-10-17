@@ -18,7 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import io.github.joshkergan.giftr.people.PeopleAdapter;
-import io.github.joshkergan.giftr.people.PeopleDbHelper;
+import io.github.joshkergan.giftr.db.GiftrDbHelper;
 
 public class PeopleActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
@@ -49,14 +49,14 @@ public class PeopleActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 	    // Set up Database cursor for People
-	    PeopleDbHelper pDbHelper = new PeopleDbHelper(getApplicationContext());
+	    GiftrDbHelper gDbHelper = new GiftrDbHelper(getApplicationContext());
 
-	    SQLiteDatabase peopleDb = pDbHelper.getReadableDatabase();
+	    SQLiteDatabase giftrDb = gDbHelper.getReadableDatabase();
 
         RecyclerView peopleList = (RecyclerView) findViewById(R.id.list_people);
         peopleList.setHasFixedSize(true);
         peopleList.setLayoutManager(new GridLayoutManager(this, 3));
-	    peopleList.setAdapter(new PeopleAdapter(peopleDb));
+	    peopleList.setAdapter(new PeopleAdapter(giftrDb));
     }
 
     @Override
