@@ -35,13 +35,13 @@ public final class GiftrDbHelper extends SQLiteOpenHelper{
 					ItemContract.ItemEntry.COLUMN_NAME_PHOTO + DATA_TYPE + " );";
 
 	private static final String SQL_CREATE_MAPPING_TABLE =
-			"CREATE TABLE  " + MappingTableContract.MappingTableEntry.TABLE_NAME +
-					" (" + MappingTableContract.MappingTableEntry.COLUMN_NAME_PERSON_ID + INTEGER_TYPE +
-					", " + MappingTableContract.MappingTableEntry.COLUMN_NAME_ITEM_ID + INTEGER_TYPE +
-					", " + MappingTableContract.MappingTableEntry.COLUMN_NAME_DATE + DATE_TYPE +
-					", " + "FOREIGN KEY(" + MappingTableContract.MappingTableEntry.COLUMN_NAME_PERSON_ID +
+			"CREATE TABLE  " + MappingContract.MappingEntry.TABLE_NAME +
+					" (" + MappingContract.MappingEntry.COLUMN_NAME_PERSON_ID + INTEGER_TYPE +
+					", " + MappingContract.MappingEntry.COLUMN_NAME_ITEM_ID + INTEGER_TYPE +
+					", " + MappingContract.MappingEntry.COLUMN_NAME_DATE + DATE_TYPE +
+					", " + "FOREIGN KEY(" + MappingContract.MappingEntry.COLUMN_NAME_PERSON_ID +
 					") REFERENCES " + PeopleContract.PeopleEntry.TABLE_NAME + "(" + PeopleContract.PeopleEntry._ID +
-					")" + "FOREIGN KEY(" + MappingTableContract.MappingTableEntry.COLUMN_NAME_ITEM_ID +
+					")" + "FOREIGN KEY(" + MappingContract.MappingEntry.COLUMN_NAME_ITEM_ID +
 					") REFERENCES " + ItemContract.ItemEntry._ID + "));";
 					// One ( closes the FOREIGN KEY statement, the other closes the CREATE TABLE statement
 

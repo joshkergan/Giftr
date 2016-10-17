@@ -8,13 +8,12 @@ import android.provider.ContactsContract;
  * Contract for the Mapping Table, which maps the Item table to the People table
  */
 
-public final class MappingTableContract{
+public final class MappingContract{
     // No external instantiation
-    private MappingTableContract() {
-    }
+    private MappingContract() {}
 
     /* Inner class to define the table components */
-    public static class MappingTableEntry implements BaseColumns{
+    public static class MappingEntry implements BaseColumns{
         public static final String TABLE_NAME = "PersonToItemMap";
         // This contains the date that the item was added to a person's preferences, TYPE: DATE
         public static final String COLUMN_NAME_DATE = "AddDate";
