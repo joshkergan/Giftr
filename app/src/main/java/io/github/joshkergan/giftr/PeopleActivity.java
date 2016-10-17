@@ -79,9 +79,9 @@ public class PeopleActivity extends AppCompatActivity
 		navigationView.setNavigationItemSelectedListener(this);
 
 
-        peopleList.setHasFixedSize(true);
-		peopleList.setLayoutManager(new GridLayoutManager(this, 2));
+        peopleList.setHasFixedSize(false);
 		peopleList.setAdapter(new PeopleAdapter(pDbHelper.getReadableDatabase()));
+		peopleList.setLayoutManager(new GridLayoutManager(this, 2));
 	}
 
     @Override
