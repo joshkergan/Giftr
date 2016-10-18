@@ -37,7 +37,7 @@ before_install:
 script:
   - ./gradlew assembleDebug assembleAndroidTest
   - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
-  - emulator -avd test -noskin -noaudio -no-window &
+  - emulator -avd test -no-window &
   - adb shell input keyevent 82 &
   - ./gradlew connectedAndroidTest
 
