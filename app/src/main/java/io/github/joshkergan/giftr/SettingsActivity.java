@@ -11,15 +11,15 @@ import android.view.MenuItem;
  * Created by Josh on 16/10/2016.
  */
 public class SettingsActivity extends AppCompatActivity implements
-		NavigationView.OnNavigationItemSelectedListener{
+        NavigationView.OnNavigationItemSelectedListener{
 
-	@Override
-	public void onCreate(@Nullable Bundle bundle) {
-		super.onCreate(bundle);
-	}
+    @Override
+    public void onCreate(@Nullable Bundle bundle) {
+        super.onCreate(bundle);
+    }
 
-	@Override
-	public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-		return false;
-	}
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        return false;
+    }
 }

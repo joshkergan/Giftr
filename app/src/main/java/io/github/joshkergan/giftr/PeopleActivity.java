@@ -27,75 +27,75 @@ import io.github.joshkergan.giftr.people.PeopleAdapter;
 public class PeopleActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
-	public static GiftrDbHelper pDbHelper;
-	private boolean addPersonActive = false;
-	private View activityView;
+    public static GiftrDbHelper pDbHelper;
+    private boolean addPersonActive = false;
+    private View activityView;
 
-	@Override
-	protected void onCreate(@Nullable Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		activityView = getLayoutInflater().inflate(R.layout.activity_people, null);
-		setContentView(activityView);
-		final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-		final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-		final RecyclerView peopleList = (RecyclerView) findViewById(R.id.list_people);
-		final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        activityView = getLayoutInflater().inflate(R.layout.activity_people, null);
+        setContentView(activityView);
+        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        final RecyclerView peopleList = (RecyclerView) findViewById(R.id.list_people);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-		setSupportActionBar(toolbar);
-		pDbHelper = new GiftrDbHelper(this);
+        setSupportActionBar(toolbar);
+        pDbHelper = new GiftrDbHelper(this);
 
-		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-		fab.setOnClickListener(new View.OnClickListener(){
-			@Override
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener(){
+            @Override
             public void onClick(View view) {
-	            final View addPerson = getLayoutInflater().inflate(R.layout.add_person, null);
-	            setContentView(addPerson);
-	            addPersonActive = true;
-	            final Button personCreateButton = (Button) findViewById(R.id.person_create_button);
-	            personCreateButton.setOnClickListener(new View.OnClickListener(){
-		            @Override
-		            public void onClick(View v) {
-			            // save person into db
-			            TextView nameView = (TextView) addPerson.findViewById(R.id.add_person_name);
-			            CircleImageView personImageView = (CircleImageView) addPerson.findViewById(R.id.friend_image);
-			            pDbHelper.createPerson(
-					            pDbHelper.getWritableDatabase(),
-					            nameView.getText().toString(),
-					            ((BitmapDrawable) personImageView.getDrawable()).getBitmap()
-			            );
-			            setContentView(activityView);
-			            addPersonActive = false;
-		            }
-	            });
+                final View addPerson = getLayoutInflater().inflate(R.layout.add_person, null);
+                setContentView(addPerson);
+                addPersonActive = true;
+                final Button personCreateButton = (Button) findViewById(R.id.person_create_button);
+                personCreateButton.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+                        // save person into db
+                        TextView nameView = (TextView) addPerson.findViewById(R.id.add_person_name);
+                        CircleImageView personImageView = (CircleImageView) addPerson.findViewById(R.id.friend_image);
+                        pDbHelper.createPerson(
+                                pDbHelper.getWritableDatabase(),
+                                nameView.getText().toString(),
+                                ((BitmapDrawable) personImageView.getDrawable()).getBitmap()
+                        );
+                        setContentView(activityView);
+                        addPersonActive = false;
+                    }
+                });
             }
         });
 
-		ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-				this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-		drawer.addDrawerListener(toggle);
-		toggle.syncState();
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
 
-		navigationView.inflateHeaderView(R.layout.nav_header_people);
-		navigationView.setNavigationItemSelectedListener(this);
+        navigationView.inflateHeaderView(R.layout.nav_header_people);
+        navigationView.setNavigationItemSelectedListener(this);
 
 
         peopleList.setHasFixedSize(false);
-		peopleList.setAdapter(new PeopleAdapter(pDbHelper.getReadableDatabase()));
-		peopleList.setLayoutManager(new GridLayoutManager(this, 2));
-	}
+        peopleList.setAdapter(new PeopleAdapter(pDbHelper.getReadableDatabase()));
+        peopleList.setLayoutManager(new GridLayoutManager(this, 2));
+    }
 
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)){
             drawer.closeDrawer(GravityCompat.START);
-	        return;
+            return;
         }
-	    if (addPersonActive){
-		    setContentView(activityView);
-		    return;
-	    }
-	    super.onBackPressed();
+        if (addPersonActive){
+            setContentView(activityView);
+            return;
+        }
+        super.onBackPressed();
     }
 
     @Override
@@ -127,12 +127,12 @@ public class PeopleActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_items){
-	        // Handle navigating to items activity
-	        Intent itemsIntent = new Intent(this, ItemsActivityStub.class);
-	        startActivity(itemsIntent);
+            // Handle navigating to items activity
+            Intent itemsIntent = new Intent(this, ItemsActivityStub.class);
+            startActivity(itemsIntent);
         }else if (id == R.id.nav_settings){
-	        Intent settingsIntent = new Intent(this, SettingsActivity.class);
-	        startActivity(settingsIntent);
+            Intent settingsIntent = new Intent(this, SettingsActivity.class);
+            startActivity(settingsIntent);
         }else if (id == R.id.nav_send){
 
         }
