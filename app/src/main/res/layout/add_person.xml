@@ -10,22 +10,21 @@
         android:id="@+id/textView3"
         android:layout_width="161dp"
         android:layout_height="wrap_content"
-        android:text="Contact Name"/>
+        android:text="@string/add_contact_prompt"/>
 
     <EditText
         android:id="@+id/add_person_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name"/>
+        android:hint="@string/add_person_hint"
+        android:inputType="textPersonName"/>
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/friend_image"
         android:layout_width="96dp"
         android:layout_height="96dp"
-        android:layout_marginLeft="150dp"
-        android:src="@drawable/sample_person"
+        android:layout_marginStart="150dp"
         app:civ_border_color="#FF000000"
         app:civ_border_width="2dp"/>
 

@@ -7,4 +7,6 @@
     <string name="action_settings">Settings</string>
     <string name="android_studio">Android Studio</string>
     <string name="person_create_button">Button</string>
+    <string name="add_person_hint">Name</string>
+    <string name="add_contact_prompt">Contact Name</string>
 </resources>
