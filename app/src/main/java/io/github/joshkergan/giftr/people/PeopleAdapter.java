@@ -28,10 +28,10 @@ public final class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.View
 	private boolean validData;
 	private Cursor c;
 
-	public PeopleAdapter(SQLiteDatabase peopleDb) {
+	public PeopleAdapter(SQLiteDatabase giftrDb) {
 		super();
-		this.dbReadConnection = peopleDb;
-		c = peopleDb.query(
+		this.dbReadConnection = giftrDb;
+		c = giftrDb.query(
 				true,
 				PeopleContract.PeopleEntry.TABLE_NAME,
 				projection,

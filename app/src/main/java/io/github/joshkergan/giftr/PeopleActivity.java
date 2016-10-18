@@ -22,12 +22,12 @@ import android.widget.TextView;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.github.joshkergan.giftr.people.PeopleAdapter;
-import io.github.joshkergan.giftr.people.PeopleDbHelper;
+import io.github.joshkergan.giftr.db.GiftrDbHelper;
 
 public class PeopleActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
-	public static PeopleDbHelper pDbHelper;
+	public static GiftrDbHelper pDbHelper;
 	private boolean addPersonActive = false;
 	private View activityView;
 
@@ -42,7 +42,7 @@ public class PeopleActivity extends AppCompatActivity
 		final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
 		setSupportActionBar(toolbar);
-		pDbHelper = new PeopleDbHelper(this);
+		pDbHelper = new GiftrDbHelper(this);
 
 		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 		fab.setOnClickListener(new View.OnClickListener(){
@@ -128,7 +128,7 @@ public class PeopleActivity extends AppCompatActivity
 
         if (id == R.id.nav_items){
 	        // Handle navigating to items activity
-	        Intent itemsIntent = new Intent(this, ItemsActivity.class);
+	        Intent itemsIntent = new Intent(this, ItemsActivityStub.class);
 	        startActivity(itemsIntent);
         }else if (id == R.id.nav_settings){
 	        Intent settingsIntent = new Intent(this, SettingsActivity.class);
