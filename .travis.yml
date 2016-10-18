@@ -23,5 +23,5 @@ android:
     # Android Image
     - sys-img-armeabi-v7a-android-24
 
-    script:
-      - ./gradlew assembleDebug test
+script:
+  - ./gradlew assembleDebug test
