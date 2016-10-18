@@ -21,8 +21,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import io.github.joshkergan.giftr.people.PeopleAdapter;
 import io.github.joshkergan.giftr.db.GiftrDbHelper;
+import io.github.joshkergan.giftr.people.PeopleAdapter;
 
 public class PeopleActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{

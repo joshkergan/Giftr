@@ -8,15 +8,16 @@ import android.provider.BaseColumns;
  */
 
 public final class ItemContract{
-    // No external instantiation
-    private ItemContract() {}
+	// No external instantiation
+	private ItemContract() {
+	}
 
-    /* Inner class to define the table components */
-    public static class ItemEntry implements BaseColumns{
-        public static final String TABLE_NAME = "Item";
-        // This contains the item's full name, TYPE: STRING
-        public static final String COLUMN_NAME_ITEM = "itemName";
-        // Contains a reference to the photo stored for this item, TYPE: BLOB
-        public static final String COLUMN_NAME_PHOTO = "photo";
-    }
+	/* Inner class to define the table components */
+	public static class ItemEntry implements BaseColumns{
+		public static final String TABLE_NAME = "Item";
+		// This contains the item's full name, TYPE: STRING
+		public static final String COLUMN_NAME_ITEM = "itemName";
+		// Contains a reference to the photo stored for this item, TYPE: BLOB
+		public static final String COLUMN_NAME_PHOTO = "photo";
+	}
 }

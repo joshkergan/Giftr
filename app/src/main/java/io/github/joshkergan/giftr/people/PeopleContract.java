@@ -9,7 +9,8 @@ import android.provider.BaseColumns;
 
 public final class PeopleContract{
 	// No external instantiation
-	private PeopleContract() {}
+	private PeopleContract() {
+	}
 
 	/* Inner class to define the table components */
 	public static class PeopleEntry implements BaseColumns{

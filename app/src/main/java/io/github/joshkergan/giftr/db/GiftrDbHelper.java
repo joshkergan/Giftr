@@ -1,11 +1,15 @@
 package io.github.joshkergan.giftr.db;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
 
-import io.github.joshkergan.giftr.people.PeopleContract;
+import java.io.ByteArrayOutputStream;
+
 import io.github.joshkergan.giftr.items.ItemContract;
+import io.github.joshkergan.giftr.people.PeopleContract;
 
 /**
  * Created by Josh on 16/10/2016.
@@ -43,7 +47,7 @@ public final class GiftrDbHelper extends SQLiteOpenHelper{
 					") REFERENCES " + PeopleContract.PeopleEntry.TABLE_NAME + "(" + PeopleContract.PeopleEntry._ID +
 					")" + "FOREIGN KEY(" + MappingContract.MappingEntry.COLUMN_NAME_ITEM_ID +
 					") REFERENCES " + ItemContract.ItemEntry._ID + "));";
-					// One ( closes the FOREIGN KEY statement, the other closes the CREATE TABLE statement
+	// One ( closes the FOREIGN KEY statement, the other closes the CREATE TABLE statement
 
 	private static final String SQL_CREATE_ENTRIES = SQL_CREATE_PEOPLE_TABLE +
 			SQL_CREATE_ITEM_TABLE +
@@ -62,5 +66,19 @@ public final class GiftrDbHelper extends SQLiteOpenHelper{
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		// Logic for updating the table schema should go here. It will probably be ugly
 		// spaghetti code.
+	}
+
+	public void createPerson(SQLiteDatabase db, String name, Bitmap image) {
+		ContentValues personValues = new ContentValues();
+		personValues.put(PeopleContract.PeopleEntry.COLUMN_NAME_PERSON, name);
+		if (image == null){
+			personValues.putNull(PeopleContract.PeopleEntry.COLUMN_NAME_PHOTO);
+		}else{
+			ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+			image.compress(Bitmap.CompressFormat.PNG, 100, byteStream);
+			personValues.put(PeopleContract.PeopleEntry.COLUMN_NAME_PHOTO, byteStream.toByteArray());
+
+		}
+		db.insert(PeopleContract.PeopleEntry.TABLE_NAME, null, personValues);
 	}
 }
