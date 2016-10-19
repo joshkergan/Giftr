@@ -1,7 +1,6 @@
 package io.github.joshkergan.giftr.db;
 
 import android.provider.BaseColumns;
-import android.provider.ContactsContract;
 
 /**
  * Created by Patrick on 16/10/2016.
@@ -10,7 +9,8 @@ import android.provider.ContactsContract;
 
 public final class MappingContract{
     // No external instantiation
-    private MappingContract() {}
+    private MappingContract() {
+    }
 
     /* Inner class to define the table components */
     public static class MappingEntry implements BaseColumns{

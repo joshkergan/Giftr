@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:weightSum="1">
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="161dp"
+        android:layout_height="wrap_content"
+        android:text="@string/add_contact_prompt"/>
+
+    <EditText
+        android:id="@+id/add_person_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/add_person_hint"
+        android:inputType="textPersonName"/>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/friend_image"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:layout_marginStart="150dp"
+        app:civ_border_color="#FF000000"
+        app:civ_border_width="2dp"/>
+
+    <Button
+        android:id="@+id/person_create_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:text="@string/person_create_button"/>
+</LinearLayout>

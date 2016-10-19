@@ -9,7 +9,8 @@ import android.provider.BaseColumns;
 
 public final class ItemContract{
     // No external instantiation
-    private ItemContract() {}
+    private ItemContract() {
+    }
 
     /* Inner class to define the table components */
     public static class ItemEntry implements BaseColumns{
