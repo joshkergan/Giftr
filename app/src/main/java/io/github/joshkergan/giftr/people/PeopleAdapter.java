@@ -25,7 +25,7 @@ public final class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.View
     };
     private final static String order = PeopleContract.PeopleEntry.COLUMN_NAME_PERSON + " ASC";
     private SQLiteDatabase dbReadConnection;
-    private boolean validData;
+    private boolean validData = true;
     private Cursor c;
 
     public PeopleAdapter(SQLiteDatabase giftrDb) {
@@ -39,7 +39,7 @@ public final class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.View
                 null,
                 null,
                 null,
-                order,
+                null,//order,
                 null
         );
     }
@@ -54,7 +54,9 @@ public final class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.View
     public void onBindViewHolder(ViewHolder holder, int position) {
         c.moveToPosition(position);
         byte[] blob = c.getBlob(c.getColumnIndex(PeopleContract.PeopleEntry.COLUMN_NAME_PHOTO));
-        holder.mFriendIcon.setImageBitmap(BitmapFactory.decodeByteArray(blob, 0, blob.length));
+        if (blob != null) {
+            holder.mFriendIcon.setImageBitmap(BitmapFactory.decodeByteArray(blob, 0, blob.length));
+        }
         holder.mFriendName.setText(
                 c.getString(c.getColumnIndex(PeopleContract.PeopleEntry.COLUMN_NAME_PERSON))
         );
@@ -72,7 +74,7 @@ public final class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.View
     public int getItemCount() {
         if (validData && c != null){
             return c.getCount();
-        }else{
+        } else {
             return 0;
         }
     }
