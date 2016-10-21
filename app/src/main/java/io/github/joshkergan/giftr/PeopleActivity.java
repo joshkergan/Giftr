@@ -42,7 +42,7 @@ public class PeopleActivity extends AppCompatActivity
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
-        pDbHelper = new GiftrDbHelper(this);
+        pDbHelper = GiftrDbHelper.getDbInstance(this);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener(){
