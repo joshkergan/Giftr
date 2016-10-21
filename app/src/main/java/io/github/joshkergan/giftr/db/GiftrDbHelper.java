@@ -17,31 +17,24 @@ import io.github.joshkergan.giftr.people.PeopleContract;
  */
 
 public final class GiftrDbHelper extends SQLiteOpenHelper{
-    // The single instance of the DB
-    private static GiftrDbHelper sInstance;
-
     // Some helpers for Types
     public static final int DATABASE_VERSION = 1;
     // Constants to preform the normal actions on the DB.
     public static final String DATABASE_NAME = "Giftr.db";
-
     private static final String TEXT_TYPE = " TEXT";
     private static final String DATA_TYPE = " BLOB";
     private static final String DATE_TYPE = " DATE";
     private static final String INTEGER_TYPE = " INTEGER";
-
     private static final String SQL_CREATE_PEOPLE_TABLE =
             "CREATE TABLE " + PeopleContract.PeopleEntry.TABLE_NAME +
                     " (" + PeopleContract.PeopleEntry._ID + INTEGER_TYPE + " PRIMARY KEY," +
                     PeopleContract.PeopleEntry.COLUMN_NAME_PERSON + TEXT_TYPE + " ," +
                     PeopleContract.PeopleEntry.COLUMN_NAME_PHOTO + DATA_TYPE + " );";
-
     private static final String SQL_CREATE_ITEM_TABLE =
             "CREATE TABLE " + ItemContract.ItemEntry.TABLE_NAME +
                     " (" + ItemContract.ItemEntry._ID + INTEGER_TYPE + " PRIMARY KEY," +
                     ItemContract.ItemEntry.COLUMN_NAME_ITEM + TEXT_TYPE + " ," +
                     ItemContract.ItemEntry.COLUMN_NAME_PHOTO + DATA_TYPE + " );";
-
     private static final String SQL_CREATE_MAPPING_TABLE =
             "CREATE TABLE  " + MappingContract.MappingEntry.TABLE_NAME +
                     " (" + MappingContract.MappingEntry.COLUMN_NAME_PERSON_ID + INTEGER_TYPE +
@@ -51,11 +44,12 @@ public final class GiftrDbHelper extends SQLiteOpenHelper{
                     ") REFERENCES " + PeopleContract.PeopleEntry.TABLE_NAME + "(" + PeopleContract.PeopleEntry._ID +
                     ")" + "FOREIGN KEY(" + MappingContract.MappingEntry.COLUMN_NAME_ITEM_ID +
                     ") REFERENCES " + ItemContract.ItemEntry._ID + "));";
-    // One ( closes the FOREIGN KEY statement, the other closes the CREATE TABLE statement
-
     private static final String SQL_CREATE_ENTRIES = SQL_CREATE_PEOPLE_TABLE +
             SQL_CREATE_ITEM_TABLE +
             SQL_CREATE_MAPPING_TABLE;
+    // One ( closes the FOREIGN KEY statement, the other closes the CREATE TABLE statement
+    // The single instance of the DB
+    private static GiftrDbHelper sInstance;
 
     // Use the getInstance method to get the DB instance
     private GiftrDbHelper(Context context) {
@@ -63,7 +57,7 @@ public final class GiftrDbHelper extends SQLiteOpenHelper{
     }
 
     public static synchronized GiftrDbHelper getDbInstance(Context context) {
-        if(sInstance == null) {
+        if (sInstance == null){
             sInstance = new GiftrDbHelper(context.getApplicationContext());
         }
         return sInstance;
