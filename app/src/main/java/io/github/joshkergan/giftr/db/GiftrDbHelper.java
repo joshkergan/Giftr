@@ -17,10 +17,14 @@ import io.github.joshkergan.giftr.people.PeopleContract;
  */
 
 public final class GiftrDbHelper extends SQLiteOpenHelper{
+    // The single instance of the DB
+    private static GiftrDbHelper sInstance;
+
     // Some helpers for Types
     public static final int DATABASE_VERSION = 1;
     // Constants to preform the normal actions on the DB.
     public static final String DATABASE_NAME = "Giftr.db";
+
     private static final String TEXT_TYPE = " TEXT";
     private static final String DATA_TYPE = " BLOB";
     private static final String DATE_TYPE = " DATE";
@@ -53,8 +57,16 @@ public final class GiftrDbHelper extends SQLiteOpenHelper{
             SQL_CREATE_ITEM_TABLE +
             SQL_CREATE_MAPPING_TABLE;
 
-    public GiftrDbHelper(Context context) {
+    // Use the getInstance method to get the DB instance
+    private GiftrDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    public static synchronized GiftrDbHelper getDbInstance(Context context) {
+        if(sInstance == null) {
+            sInstance = new GiftrDbHelper(context.getApplicationContext());
+        }
+        return sInstance;
     }
 
     @Override
