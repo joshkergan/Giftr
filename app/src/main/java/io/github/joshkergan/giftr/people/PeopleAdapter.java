@@ -54,7 +54,9 @@ public final class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.View
     public void onBindViewHolder(ViewHolder holder, int position) {
         c.moveToPosition(position);
         byte[] blob = c.getBlob(c.getColumnIndex(PeopleContract.PeopleEntry.COLUMN_NAME_PHOTO));
-        //holder.mFriendIcon.setImageBitmap(BitmapFactory.decodeByteArray(blob, 0, blob.length));
+        if (blob != null) {
+            holder.mFriendIcon.setImageBitmap(BitmapFactory.decodeByteArray(blob, 0, blob.length));
+        }
         holder.mFriendName.setText(
                 c.getString(c.getColumnIndex(PeopleContract.PeopleEntry.COLUMN_NAME_PERSON))
         );
@@ -71,8 +73,7 @@ public final class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.View
     @Override
     public int getItemCount() {
         if (validData && c != null){
-            int count = c.getCount();
-            return count;
+            return c.getCount();
         } else {
             return 0;
         }
