@@ -29,15 +29,17 @@ public class PeopleActivity extends AppCompatActivity
 
     public static GiftrDbHelper pDbHelper;
     private boolean addPersonActive = false;
+    private View activityView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final DrawerLayout navContainer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        activityView = getLayoutInflater().inflate(R.layout.activity_people, null);
+        setContentView(activityView);
+        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         final RecyclerView peopleList = (RecyclerView) findViewById(R.id.list_people);
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setContentView(R.layout.app_bar_people);
 
         setSupportActionBar(toolbar);
 
@@ -47,9 +49,8 @@ public class PeopleActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                setContentView(R.layout.add_person);
-                final View addPerson = findViewById(R.id.add_person_layout);
-
+                final View addPerson = getLayoutInflater().inflate(R.layout.add_person, null);
+                setContentView(addPerson);
                 addPersonActive = true;
                 final Button personCreateButton = (Button) findViewById(R.id.person_create_button);
                 personCreateButton.setOnClickListener(new View.OnClickListener(){
@@ -63,7 +64,7 @@ public class PeopleActivity extends AppCompatActivity
                                 nameView.getText().toString(),
                                 ((BitmapDrawable) personImageView.getDrawable()).getBitmap()
                         );
-                        setContentView(personListView);
+                        setContentView(activityView);
                         addPersonActive = false;
                         peopleList.setAdapter(new PeopleAdapter(pDbHelper.getReadableDatabase()));
                     }
@@ -72,8 +73,8 @@ public class PeopleActivity extends AppCompatActivity
         });
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, personListView, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        personListView.addDrawerListener(toggle);
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         navigationView.inflateHeaderView(R.layout.nav_header_people);
@@ -87,13 +88,13 @@ public class PeopleActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.people_layout);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)){
             drawer.closeDrawer(GravityCompat.START);
             return;
         }
         if (addPersonActive){
-            setContentView(drawer);
+            setContentView(activityView);
             return;
         }
         super.onBackPressed();
@@ -138,7 +139,7 @@ public class PeopleActivity extends AppCompatActivity
 
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.people_layout);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
