@@ -42,6 +42,7 @@ public class PeopleActivity extends AppCompatActivity
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
+
         pDbHelper = GiftrDbHelper.getDbInstance(this);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -65,6 +66,7 @@ public class PeopleActivity extends AppCompatActivity
                         );
                         setContentView(activityView);
                         addPersonActive = false;
+                        peopleList.setAdapter(new PeopleAdapter(pDbHelper.getReadableDatabase()));
                     }
                 });
             }
@@ -80,8 +82,8 @@ public class PeopleActivity extends AppCompatActivity
 
 
         peopleList.setHasFixedSize(false);
-        peopleList.setAdapter(new PeopleAdapter(pDbHelper.getReadableDatabase()));
         peopleList.setLayoutManager(new GridLayoutManager(this, 2));
+        peopleList.setAdapter(new PeopleAdapter(pDbHelper.getReadableDatabase()));
     }
 
     @Override
