@@ -19,7 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
+import io.github.joshkergan.giftr.items.AsyncGetItems;
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.github.joshkergan.giftr.db.GiftrDbHelper;
 import io.github.joshkergan.giftr.people.PeopleAdapter;
@@ -52,6 +52,7 @@ public class PeopleActivity extends AppCompatActivity
                 final View addPerson = getLayoutInflater().inflate(R.layout.add_person, null);
                 setContentView(addPerson);
                 addPersonActive = true;
+                new AsyncGetItems().execute("Black");
                 final Button personCreateButton = (Button) findViewById(R.id.person_create_button);
                 personCreateButton.setOnClickListener(new View.OnClickListener(){
                     @Override
