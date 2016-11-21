@@ -26,7 +26,8 @@
             app:layout_anchor="@id/item_list"
             android:layout_margin="24px"
             android:layout_gravity="bottom|right"
-            tools:src="@drawable/ic_add_white_24dp" />
+            tools:src="@drawable/ic_add_white_24dp"
+            android:id="@+id/add_item_fab" />
             app:srcCompat="@color/colorAccent"
             android:id="@+id/floating_action_button" />
     </android.support.design.widget.CoordinatorLayout>

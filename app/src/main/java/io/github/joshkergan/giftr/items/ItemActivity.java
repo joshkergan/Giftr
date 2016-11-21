@@ -1,8 +1,8 @@
 package io.github.joshkergan.giftr.items;
 
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -35,6 +35,16 @@ public class ItemActivity extends AppCompatActivity {
         final RecyclerView itemlist = (RecyclerView)findViewById(R.id.item_list);
         itemlist.setAdapter(new ItemAdapter(dbHelper.getReadableDatabase(), personId));
         itemlist.setHasFixedSize(false);
+
+        // Set the onclick functionality for the FAB
+        FloatingActionButton fab = (FloatingActionButton) activityView.findViewById(R.id.add_item_fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(ItemActivity.this, AddItemActivity.class);
+                intent.putExtra("PERSON_ID", personId);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
