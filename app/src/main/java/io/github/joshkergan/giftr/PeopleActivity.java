@@ -52,7 +52,6 @@ public class PeopleActivity extends AppCompatActivity
                 final View addPerson = getLayoutInflater().inflate(R.layout.add_person, null);
                 setContentView(addPerson);
                 addPersonActive = true;
-                new AsyncGetItems().execute("Black");
                 final Button personCreateButton = (Button) findViewById(R.id.person_create_button);
                 personCreateButton.setOnClickListener(new View.OnClickListener(){
                     @Override
