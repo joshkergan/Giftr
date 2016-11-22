@@ -24,14 +24,15 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import io.github.joshkergan.giftr.db.GiftrDbHelper;
 import io.github.joshkergan.giftr.people.PeopleAdapter;
 
-public class PeopleActivity extends AppCompatActivity
+final public class PeopleActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
     public static GiftrDbHelper pDbHelper;
     private boolean addPersonActive = false;
     private View activityView;
+    private PeopleAdapter.OnItemClickListener peopleAction;
+    private PeopleAdapter listAdapter;
 
-    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityView = getLayoutInflater().inflate(R.layout.activity_people, null);
@@ -66,7 +67,7 @@ public class PeopleActivity extends AppCompatActivity
                         );
                         setContentView(activityView);
                         addPersonActive = false;
-                        peopleList.setAdapter(new PeopleAdapter(pDbHelper.getReadableDatabase()));
+                        peopleList.setAdapter(new PeopleAdapter(pDbHelper.getReadableDatabase(), peopleAction));
                     }
                 });
             }
@@ -80,10 +81,19 @@ public class PeopleActivity extends AppCompatActivity
         navigationView.inflateHeaderView(R.layout.nav_header_people);
         navigationView.setNavigationItemSelectedListener(this);
 
+        peopleAction = new PeopleAdapter.OnItemClickListener(){
+            @Override
+            public void OnItemClick(int position) {
+                Intent personIntent = new Intent(getApplicationContext(), PersonActivity.class);
+                personIntent.putExtra("PersonID", listAdapter.getItemId(position));
+                startActivity(personIntent);
+            }
+        };
 
+        listAdapter = new PeopleAdapter(pDbHelper.getReadableDatabase(), peopleAction);
         peopleList.setHasFixedSize(false);
         peopleList.setLayoutManager(new GridLayoutManager(this, 2));
-        peopleList.setAdapter(new PeopleAdapter(pDbHelper.getReadableDatabase()));
+        peopleList.setAdapter(listAdapter);
     }
 
     @Override

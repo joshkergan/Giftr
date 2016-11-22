@@ -9,4 +9,5 @@
     <string name="person_create_button">Button</string>
     <string name="add_person_hint">Name</string>
     <string name="add_contact_prompt">Contact Name</string>
+    <string name="testString">TEST NAME</string>
 </resources>

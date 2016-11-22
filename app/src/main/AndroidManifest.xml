@@ -18,6 +18,10 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity
+            android:name=".PersonActivity"
+            android:theme="@style/AppTheme"/>
+        <activity android:name=".ItemsActivityStub"/>
         <activity android:name=".SettingsActivity"/>
     </application>
 
