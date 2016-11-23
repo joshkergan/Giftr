@@ -9,4 +9,31 @@
     <string name="person_create_button">Button</string>
     <string name="add_person_hint">Name</string>
     <string name="add_contact_prompt">Contact Name</string>
+    <string name="testString">TEST NAME</string>
+    <string name="add_item_text">Add Item(s)</string>
+    <string name="app_info">
+        This app was developed for SE 464 by
+            Balaji Sankaranarayanan
+            Leslie Ying
+            Josh Kergan
+            Patrick Perrier.
+    </string>
+    <string name="use_disclaimer">Legal Notes</string>
+    <string name="disclaimer_circle_view">
+        CircleImageView is owned by Henning Dodenhof
+
+        Copyright 2014 - 2016 Henning Dodenhof
+
+        Licensed under the Apache License, Version 2.0 (the "License");
+        you may not use this file except in compliance with the License.
+        You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+        Unless required by applicable law or agreed to in writing, software
+        distributed under the License is distributed on an "AS IS" BASIS,
+        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+        See the License for the specific language governing permissions and
+        limitations under the License.
+    </string>
 </resources>

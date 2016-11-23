@@ -11,16 +11,40 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="io.github.joshkergan.giftr.PeopleActivity">
+    tools:context="io.github.joshkergan.giftr.PersonActivity">
+
+    <LinearLayout
+        android:id="@+id/person_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/person_image"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            app:civ_border_color="#FF000000"
+            app:civ_border_width="2dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:text="@string/testString"/>
+    </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/list_people"
+        android:id="@+id/person_interests"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
         android:layout_marginTop="25dp"
+        android:background="@color/backgroundTint"
         android:scrollbars="vertical"
         app:layoutManager="android.support.v7.widget.GridLayoutManager"
-        tools:listitem="@layout/person_info"/>
+        tools:listitem="@layout/item_info"/>
 </RelativeLayout>
