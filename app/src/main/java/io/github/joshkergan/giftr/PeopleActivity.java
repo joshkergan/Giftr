@@ -1,7 +1,6 @@
 package io.github.joshkergan.giftr;
 
 import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,19 +12,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import io.github.joshkergan.giftr.db.GiftrDbHelper;
 import io.github.joshkergan.giftr.items.ItemActivity;
+import io.github.joshkergan.giftr.people.AddPersonActivity;
 import io.github.joshkergan.giftr.people.PeopleAdapter;
 
 final public class PeopleActivity extends GiftrActivity{
 
-    public static GiftrDbHelper pDbHelper;
     private boolean addPersonActive = false;
     private View activityView;
+    private RecyclerView peopleList;
     private PeopleAdapter.OnItemClickListener peopleAction;
     private PeopleAdapter listAdapter;
 
@@ -33,7 +30,7 @@ final public class PeopleActivity extends GiftrActivity{
         super.onCreate(savedInstanceState);
 
         activityView = attachView(R.layout.people_activity, this);
-        final RecyclerView peopleList = (RecyclerView) findViewById(R.id.list_people);
+        peopleList = (RecyclerView) findViewById(R.id.list_people);
 
         pDbHelper = GiftrDbHelper.getDbInstance(this);
 
@@ -41,26 +38,8 @@ final public class PeopleActivity extends GiftrActivity{
         fab.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                final View addPerson = attachView(R.layout.add_person);
-
-                addPersonActive = true;
-                final Button personCreateButton = (Button) findViewById(R.id.person_create_button);
-                personCreateButton.setOnClickListener(new View.OnClickListener(){
-                    @Override
-                    public void onClick(View v) {
-                        // save person into db
-                        TextView nameView = (TextView) addPerson.findViewById(R.id.add_person_name);
-                        CircleImageView personImageView = (CircleImageView) addPerson.findViewById(R.id.friend_image);
-                        pDbHelper.createPerson(
-                                pDbHelper.getWritableDatabase(),
-                                nameView.getText().toString(),
-                                ((BitmapDrawable) personImageView.getDrawable()).getBitmap()
-                        );
-                        attachView(activityView);
-                        addPersonActive = false;
-                        peopleList.setAdapter(new PeopleAdapter(pDbHelper.getReadableDatabase(), peopleAction));
-                    }
-                });
+                Intent addPersonIntent = new Intent(getApplicationContext(), AddPersonActivity.class);
+                startActivity(addPersonIntent);
             }
         });
 
@@ -115,6 +94,13 @@ final public class PeopleActivity extends GiftrActivity{
             return;
         }
         super.onBackPressed();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        listAdapter = new PeopleAdapter(pDbHelper.getReadableDatabase(), peopleAction);
+        peopleList.setAdapter(listAdapter);
     }
 
     @Override

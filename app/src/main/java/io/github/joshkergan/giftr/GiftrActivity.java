@@ -12,6 +12,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -25,8 +26,10 @@ import io.github.joshkergan.giftr.db.GiftrDbHelper;
  */
 
 public abstract class GiftrActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+    final private String TAG = "GiftrActivity";
 
     protected GiftrDbHelper pDbHelper;
+
     private CoordinatorLayout baseView;
     private NavigationView navView;
     @Nullable
@@ -38,7 +41,8 @@ public abstract class GiftrActivity extends AppCompatActivity implements Navigat
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.base_activity);
-        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         navView = (NavigationView) findViewById(R.id.nav_view);
@@ -54,7 +58,7 @@ public abstract class GiftrActivity extends AppCompatActivity implements Navigat
             toggle.syncState();
         }
 
-        navView.inflateHeaderView(R.layout.nav_header_people);
+        navView.inflateHeaderView(R.layout.nav_header);
         navView.setNavigationItemSelectedListener(this);
     }
 
@@ -72,6 +76,7 @@ public abstract class GiftrActivity extends AppCompatActivity implements Navigat
             @Nullable NavigationView.OnNavigationItemSelectedListener lis
     ) {
         if (attachedView != null){
+            Log.d(TAG, "attachView: removing old view");
             baseView.removeView(attachedView);
             navView.setNavigationItemSelectedListener(this);
         }
@@ -87,6 +92,7 @@ public abstract class GiftrActivity extends AppCompatActivity implements Navigat
             @Nullable NavigationView.OnNavigationItemSelectedListener lis
     ) {
         if (attachedView != null){
+            Log.d(TAG, "attachView: removing old view");
             baseView.removeView(attachedView);
             navView.setNavigationItemSelectedListener(this);
         }
@@ -94,7 +100,7 @@ public abstract class GiftrActivity extends AppCompatActivity implements Navigat
             navView.setNavigationItemSelectedListener(lis);
         }
         attachedView = getLayoutInflater().inflate(id, baseView);
-        baseView.invalidate();
+        attachedView.getLayoutParams();
         return attachedView;
     }
 

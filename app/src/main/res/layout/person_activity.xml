@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="io.github.joshkergan.giftr.PeopleActivity">
 
     <include layout="@layout/content_person"/>
@@ -15,7 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
+        android:layout_margin="@dimen/fab_margin_large"
         app:srcCompat="@drawable/ic_add_white_24dp"/>
 
 </android.support.design.widget.CoordinatorLayout>
