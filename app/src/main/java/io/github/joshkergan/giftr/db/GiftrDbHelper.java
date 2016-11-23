@@ -133,7 +133,6 @@ public final class GiftrDbHelper extends SQLiteOpenHelper{
         itemTableValues.putNull(ItemContract.ItemEntry.COLUMN_NAME_PHOTO); // TODO: Remove this later if images are removed
 
         //  insert into the items table first, to get the key o add to the mapping.
-        // TODO: FIX THAT PRIMARY KEY !!!!1!1!
         long itemId = db.insertWithOnConflict (ItemContract.ItemEntry.TABLE_NAME,
                 null,
                 itemTableValues,
@@ -144,7 +143,6 @@ public final class GiftrDbHelper extends SQLiteOpenHelper{
         mappingTableValues.putNull(MappingContract.MappingEntry.COLUMN_NAME_DATE);
         mappingTableValues.put(MappingContract.MappingEntry.COLUMN_NAME_ITEM_ID, itemId);
 
-        // TODO: ALSO FIX THAT PRIMARY KEY !2!!!2!
         db.insertWithOnConflict(MappingContract.MappingEntry.TABLE_NAME,
                 null,
                 mappingTableValues,

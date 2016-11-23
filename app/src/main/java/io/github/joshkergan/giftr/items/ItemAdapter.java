@@ -21,20 +21,13 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     private final SQLiteDatabase dbConnection;
     // the database ID that identifies the person we're showing items for.
     // We expect this to be a valid integer value that corresponds to a person ID in the database.
-    private final int personId;
     private final static String rawSqlQuery =
-            "SELECT * FROM " + MappingContract.MappingEntry.TABLE_NAME + " INNER JOIN " +
-            ItemContract.ItemEntry.TABLE_NAME + " ON " +
-            MappingContract.MappingEntry.TABLE_NAME + "." + MappingContract.MappingEntry.COLUMN_NAME_ITEM_ID +
-            "=" + ItemContract.ItemEntry.TABLE_NAME + "." + ItemContract.ItemEntry._ID +
-            " WHERE " + MappingContract.MappingEntry.COLUMN_NAME_PERSON_ID + "=? ORDER BY " +
-            MappingContract.MappingEntry.TABLE_NAME + "." + MappingContract.MappingEntry.COLUMN_NAME_DATE +
-            " ASC;";
+            "SELECT * FROM " +
+            ItemContract.ItemEntry.TABLE_NAME + "; ";
 
-    public ItemAdapter(SQLiteDatabase db, int personId) {
-        this.personId = personId;
+    public ItemAdapter(SQLiteDatabase db) {
         this.dbConnection = db;
-        c = db.rawQuery(rawSqlQuery, new String[]{String.valueOf(personId)});
+        c = db.rawQuery(rawSqlQuery, null);
     }
 
     @Override
