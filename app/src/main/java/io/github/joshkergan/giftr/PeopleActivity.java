@@ -25,19 +25,20 @@ import io.github.joshkergan.giftr.db.GiftrDbHelper;
 import io.github.joshkergan.giftr.items.ItemActivity;
 import io.github.joshkergan.giftr.people.PeopleAdapter;
 
-public class PeopleActivity extends AppCompatActivity
+final public class PeopleActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
     public static GiftrDbHelper pDbHelper;
     private boolean addPersonActive = false;
     private View activityView;
+    private PeopleAdapter.OnItemClickListener peopleAction;
+    private PeopleAdapter listAdapter;
 
-    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        activityView = getLayoutInflater().inflate(R.layout.activity_people, null);
-        setContentView(activityView);
-        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        setContentView(R.layout.people_activity);
+        activityView = findViewById(R.id.drawer_layout);
+        final DrawerLayout drawer = (DrawerLayout) activityView;
         final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         final RecyclerView peopleList = (RecyclerView) findViewById(R.id.list_people);
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -45,7 +46,6 @@ public class PeopleActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         pDbHelper = GiftrDbHelper.getDbInstance(this);
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -67,7 +67,7 @@ public class PeopleActivity extends AppCompatActivity
                         );
                         setContentView(activityView);
                         addPersonActive = false;
-                        peopleList.setAdapter(new PeopleAdapter(pDbHelper.getReadableDatabase()));
+                        peopleList.setAdapter(new PeopleAdapter(pDbHelper.getReadableDatabase(), peopleAction));
                     }
                 });
             }
@@ -77,14 +77,24 @@ public class PeopleActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+        MenuItem peopleItem = (MenuItem) drawer.findViewById(R.id.nav_people);
 
         navigationView.inflateHeaderView(R.layout.nav_header_people);
         navigationView.setNavigationItemSelectedListener(this);
 
+        peopleAction = new PeopleAdapter.OnItemClickListener(){
+            @Override
+            public void OnItemClick(int position) {
+                Intent personIntent = new Intent(getApplicationContext(), PersonActivity.class);
+                personIntent.putExtra("PersonID", listAdapter.getItemId(position));
+                startActivity(personIntent);
+            }
+        };
 
+        listAdapter = new PeopleAdapter(pDbHelper.getReadableDatabase(), peopleAction);
         peopleList.setHasFixedSize(false);
         peopleList.setLayoutManager(new GridLayoutManager(this, 2));
-        peopleList.setAdapter(new PeopleAdapter(pDbHelper.getReadableDatabase()));
+        peopleList.setAdapter(listAdapter);
     }
 
     @Override
@@ -129,7 +139,9 @@ public class PeopleActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_items){
+        if (id == R.id.nav_people) {
+            // This is the current item
+        } else if (id == R.id.nav_items){
             // Handle navigating to items activity
             Intent itemsIntent = new Intent(this, ItemActivity.class);
             startActivity(itemsIntent);

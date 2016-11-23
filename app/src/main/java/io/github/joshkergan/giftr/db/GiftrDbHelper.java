@@ -3,6 +3,7 @@ package io.github.joshkergan.giftr.db;
 import android.content.ClipData;
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
@@ -87,6 +88,17 @@ public final class GiftrDbHelper extends SQLiteOpenHelper{
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Logic for updating the table schema should go here. It will probably be ugly
         // spaghetti code.
+    }
+
+    public Cursor getPersonInfo(SQLiteDatabase db, int id) {
+        final String PERSON_QUERY = "SELECT * FROM " + PeopleContract.PeopleEntry.TABLE_NAME +
+                " LEFT JOIN " + MappingContract.MappingEntry.TABLE_NAME + " ON " +
+                PeopleContract.PeopleEntry.TABLE_NAME + "." + PeopleContract.PeopleEntry._ID + " = "
+                + MappingContract.MappingEntry.TABLE_NAME + "." +
+                MappingContract.MappingEntry.COLUMN_NAME_PERSON_ID + " WHERE " +
+                PeopleContract.PeopleEntry._ID + " = ?";
+
+        return db.rawQuery(PERSON_QUERY, new String[]{String.valueOf(id)});
     }
 
     public void createPerson(SQLiteDatabase db, String name, Bitmap image) {

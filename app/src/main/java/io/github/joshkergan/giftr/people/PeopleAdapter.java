@@ -3,8 +3,11 @@ package io.github.joshkergan.giftr.people;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -26,12 +29,14 @@ public final class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.View
     private final static String order = PeopleContract.PeopleEntry.COLUMN_NAME_PERSON + " ASC";
     private SQLiteDatabase dbReadConnection;
     private boolean validData = true;
-    private Cursor c;
+    @Nullable private Cursor c;
+    @Nullable private OnItemClickListener mlistener;
 
-    public PeopleAdapter(SQLiteDatabase giftrDb) {
+    public PeopleAdapter(SQLiteDatabase giftrDb, @Nullable OnItemClickListener listener) {
         super();
+        mlistener = listener;
         this.dbReadConnection = giftrDb;
-        c = giftrDb.query(
+        c = dbReadConnection.query(
                 true,
                 PeopleContract.PeopleEntry.TABLE_NAME,
                 projection,
@@ -47,11 +52,14 @@ public final class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.View
     @Override
     public PeopleAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         ViewGroup v = (ViewGroup) LayoutInflater.from(parent.getContext()).inflate(R.layout.person_info, parent, false);
-        return new ViewHolder(v);
+        return new ViewHolder(v, mlistener);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        if (c == null){
+            return;
+        }
         c.moveToPosition(position);
         byte[] blob = c.getBlob(c.getColumnIndex(PeopleContract.PeopleEntry.COLUMN_NAME_PHOTO));
         if (blob != null) {
@@ -60,6 +68,7 @@ public final class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.View
         holder.mFriendName.setText(
                 c.getString(c.getColumnIndex(PeopleContract.PeopleEntry.COLUMN_NAME_PERSON))
         );
+        holder.itemView.setOnClickListener(holder);
     }
 
     @Override
@@ -79,14 +88,29 @@ public final class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.View
         }
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
-        public CircleImageView mFriendIcon;
-        public TextView mFriendName;
+    public interface OnItemClickListener{
+        void OnItemClick(int position);
+    }
 
-        public ViewHolder(ViewGroup itemView) {
+    static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+        CircleImageView mFriendIcon;
+        TextView mFriendName;
+        @Nullable
+        OnItemClickListener mListner;
+
+        ViewHolder(ViewGroup itemView, @Nullable OnItemClickListener listener) {
             super(itemView);
+            mListner = listener;
             mFriendIcon = (CircleImageView) itemView.findViewById(R.id.friend_image);
             mFriendName = (TextView) itemView.findViewById(R.id.friend_name);
+        }
+
+        @Override
+        public void onClick(View v) {
+            Log.d("RecyclerView.ViewHolder", "onClick: Person Element id: " + getAdapterPosition());
+            if (mListner != null){
+                mListner.OnItemClick(getAdapterPosition());
+            }
         }
     }
 }
