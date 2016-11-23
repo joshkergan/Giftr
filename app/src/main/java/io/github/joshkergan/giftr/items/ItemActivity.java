@@ -32,8 +32,9 @@ public class ItemActivity extends AppCompatActivity {
 
         activityView = getLayoutInflater().inflate(R.layout.content_item, null);
 
-        final RecyclerView itemlist = (RecyclerView)findViewById(R.id.item_list);
-        itemlist.setAdapter(new ItemAdapter(dbHelper.getReadableDatabase(), personId));
+        final RecyclerView itemlist = (RecyclerView)activityView.findViewById(R.id.item_list);
+        ItemAdapter adapt = new ItemAdapter(dbHelper.getReadableDatabase(), personId);
+        itemlist.setAdapter(adapt);
         itemlist.setHasFixedSize(false);
 
         // Set the onclick functionality for the FAB

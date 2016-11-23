@@ -36,7 +36,7 @@ public final class GiftrDbHelper extends SQLiteOpenHelper{
             "CREATE TABLE " + PeopleContract.PeopleEntry.TABLE_NAME +
                     " (" + PeopleContract.PeopleEntry._ID + INTEGER_TYPE + " PRIMARY KEY," +
                     PeopleContract.PeopleEntry.COLUMN_NAME_PERSON + TEXT_TYPE + " ," +
-                    PeopleContract.PeopleEntry.COLUMN_NAME_PHOTO + DATA_TYPE + " );";
+                    PeopleContract.PeopleEntry.COLUMN_NAME_PHOTO + DATA_TYPE + " );\n";
 
     // TODO: Remove image field
     // TODO: Change primary key to the name field (because two interests with the same name should
@@ -55,9 +55,9 @@ public final class GiftrDbHelper extends SQLiteOpenHelper{
                     ", " + MappingContract.MappingEntry.COLUMN_NAME_ITEM_ID + INTEGER_TYPE +
                     ", " + MappingContract.MappingEntry.COLUMN_NAME_DATE + DATE_TYPE +
                     ", " + "FOREIGN KEY(" + MappingContract.MappingEntry.COLUMN_NAME_PERSON_ID +
-                    ") REFERENCES " + PeopleContract.PeopleEntry.TABLE_NAME + "(" + PeopleContract.PeopleEntry._ID +
+                    " ) REFERENCES " + PeopleContract.PeopleEntry.TABLE_NAME + "(" + PeopleContract.PeopleEntry._ID +
                     ")" + "FOREIGN KEY(" + MappingContract.MappingEntry.COLUMN_NAME_ITEM_ID +
-                    ") REFERENCES " + ItemContract.ItemEntry._ID + "));";
+                    ") REFERENCES " + ItemContract.ItemEntry._ID + ");";
     // One ( closes the FOREIGN KEY statement, the other closes the CREATE TABLE statement
 
     private static final String SQL_CREATE_ENTRIES = SQL_CREATE_PEOPLE_TABLE +
@@ -78,7 +78,9 @@ public final class GiftrDbHelper extends SQLiteOpenHelper{
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(SQL_CREATE_ENTRIES);
+        db.execSQL(SQL_CREATE_PEOPLE_TABLE);
+        db.execSQL(SQL_CREATE_ITEM_TABLE);
+        db.execSQL(SQL_CREATE_MAPPING_TABLE);
     }
 
     @Override
