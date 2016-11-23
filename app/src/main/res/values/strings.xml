@@ -10,6 +10,7 @@
     <string name="add_person_hint">Name</string>
     <string name="add_contact_prompt">Contact Name</string>
     <string name="testString">TEST NAME</string>
+    <string name="add_item_text">Add Item(s)</string>
     <string name="app_info">
         This app was developed for SE 464 by
             Balaji Sankaranarayanan

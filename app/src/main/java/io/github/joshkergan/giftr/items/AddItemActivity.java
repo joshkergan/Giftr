@@ -56,16 +56,6 @@ public class AddItemActivity extends AppCompatActivity {
                 // TODO: implement the dynamic view from the top TODO so this
                 // is made nicer (i.e. a loop). As it is this is crap code.
                 String[] interests = new String[10];
-                interests[0] = ((EditText)findViewById(R.id.interest_field_1)).getText().toString();
-                interests[1] = ((EditText)findViewById(R.id.interest_field_2)).getText().toString();
-                interests[2] = ((EditText)findViewById(R.id.interest_field_3)).getText().toString();
-                interests[3] = ((EditText)findViewById(R.id.interest_field_4)).getText().toString();
-                interests[4] = ((EditText)findViewById(R.id.interest_field_5)).getText().toString();
-                interests[5] = ((EditText)findViewById(R.id.interest_field_6)).getText().toString();
-                interests[6] = ((EditText)findViewById(R.id.interest_field_7)).getText().toString();
-                interests[7] = ((EditText)findViewById(R.id.interest_field_8)).getText().toString();
-                interests[8] = ((EditText)findViewById(R.id.interest_field_9)).getText().toString();
-                interests[9] = ((EditText)findViewById(R.id.interest_field_10)).getText().toString();
 
                 for(String s : interests) {
                     if(!s.isEmpty()) {

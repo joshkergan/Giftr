@@ -17,4 +17,10 @@ public class AmazonItem {
         imageUrl = ImageUrl;
         price = Price;
     }
+
+    // we have this for the arrayadapter to work with!
+    @Override
+    public String toString() {
+        return name;
+    }
 }

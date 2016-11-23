@@ -1,9 +1,13 @@
 package io.github.joshkergan.giftr.items;
 
+import android.content.Context;
 import android.os.AsyncTask;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +23,8 @@ import io.github.joshkergan.giftr.items.AmazonItem;
 
 public class AsyncGetItems extends AsyncTask<String, Void, List<AmazonItem>>{
 
+    public AutoCompleteTextView textView = null;
+    Context context = null;
     static String url = "http://10.0.2.2:8080/search/";
     // Takes in a string search parameter
     // returns array of objects
@@ -46,10 +52,10 @@ public class AsyncGetItems extends AsyncTask<String, Void, List<AmazonItem>>{
             return itemList;
         } catch (Exception ex) {
             System.out.println("error?");
+            return null;
             // just to make the errors go away :(
             // we should maybe deal with these... hehehe
         }
-        return null;
     }
 
     @Override
@@ -57,5 +63,8 @@ public class AsyncGetItems extends AsyncTask<String, Void, List<AmazonItem>>{
         // we use this to actually see the result
         // we actually need to figure out how this will be called to use this so
         // its empty for now
+
+        ArrayAdapter<AmazonItem> adapter = new ArrayAdapter<AmazonItem>(context, android.R.layout.simple_list_item_1, items);
+        textView.setAdapter(adapter);
     }
 }
