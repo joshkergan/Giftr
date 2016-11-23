@@ -6,10 +6,10 @@ package io.github.joshkergan.giftr.items;
 
 public class AmazonItem {
     // left these public for easyness sake
-    String name;
-    String url;
-    String imageUrl;
-    Double price;
+    public String name;
+    public String url;
+    public String imageUrl;
+    public Double price;
 
     AmazonItem(String Name, String Url, String ImageUrl, Double Price) {
         name = Name;

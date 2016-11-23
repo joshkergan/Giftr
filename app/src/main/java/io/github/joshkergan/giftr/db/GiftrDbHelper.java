@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import java.io.ByteArrayOutputStream;
 import java.sql.Date;
 
+import io.github.joshkergan.giftr.items.AmazonItem;
 import io.github.joshkergan.giftr.items.ItemContract;
 import io.github.joshkergan.giftr.people.PeopleContract;
 
@@ -46,7 +47,8 @@ public final class GiftrDbHelper extends SQLiteOpenHelper{
             "CREATE TABLE " + ItemContract.ItemEntry.TABLE_NAME +
                     " (" + ItemContract.ItemEntry._ID + INTEGER_TYPE + " PRIMARY KEY," +
                     ItemContract.ItemEntry.COLUMN_NAME_ITEM + TEXT_TYPE + " ," +
-                    ItemContract.ItemEntry.COLUMN_NAME_PHOTO + DATA_TYPE + " );";
+                    ItemContract.ItemEntry.COLUMN_NAME_AMAZON_URL + TEXT_TYPE + " ," +
+                    ItemContract.ItemEntry.COLUMN_NAME_PHOTO + TEXT_TYPE + " );";
 
     // TODO: Add primary key constraint on (person, mapping) pair. Make this gel with the primary
     // key change on the items table.
@@ -125,13 +127,13 @@ public final class GiftrDbHelper extends SQLiteOpenHelper{
      * TODO: Either add image parameter to this or remove the image from the item table entirely.
      *                 Second is recommended.
      */
-    public void addInterestToPersonById(SQLiteDatabase db, int personId, String interest) {
+    public void addInterestToPersonById(SQLiteDatabase db, int personId, AmazonItem item) {
         ContentValues itemTableValues = new ContentValues();
         ContentValues mappingTableValues = new ContentValues();
 
-        itemTableValues.put(ItemContract.ItemEntry.COLUMN_NAME_ITEM, interest);
-        itemTableValues.putNull(ItemContract.ItemEntry.COLUMN_NAME_PHOTO); // TODO: Remove this later if images are removed
-
+        itemTableValues.put(ItemContract.ItemEntry.COLUMN_NAME_ITEM, item.name);
+        itemTableValues.put(ItemContract.ItemEntry.COLUMN_NAME_PHOTO, item.imageUrl);
+        itemTableValues.put(ItemContract.ItemEntry.COLUMN_NAME_AMAZON_URL, item.url);
         //  insert into the items table first, to get the key o add to the mapping.
         long itemId = db.insertWithOnConflict (ItemContract.ItemEntry.TABLE_NAME,
                 null,
