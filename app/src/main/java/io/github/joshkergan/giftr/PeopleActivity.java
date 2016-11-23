@@ -22,6 +22,7 @@ import android.widget.TextView;
 import io.github.joshkergan.giftr.items.AsyncGetItems;
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.github.joshkergan.giftr.db.GiftrDbHelper;
+import io.github.joshkergan.giftr.items.ItemActivity;
 import io.github.joshkergan.giftr.people.PeopleAdapter;
 
 public class PeopleActivity extends AppCompatActivity
@@ -130,7 +131,7 @@ public class PeopleActivity extends AppCompatActivity
 
         if (id == R.id.nav_items){
             // Handle navigating to items activity
-            Intent itemsIntent = new Intent(this, ItemsActivityStub.class);
+            Intent itemsIntent = new Intent(this, ItemActivity.class);
             startActivity(itemsIntent);
         }else if (id == R.id.nav_settings){
             Intent settingsIntent = new Intent(this, SettingsActivity.class);
