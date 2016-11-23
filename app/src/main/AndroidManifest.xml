@@ -41,6 +41,7 @@
         <activity android:name=".ItemsActivityStub"/>
         <activity android:name=".SettingsActivity"/>
         <activity android:name=".items.ItemActivity"/>
+        <activity android:name=".items.AddItemActivity"/>
 
     </application>
 

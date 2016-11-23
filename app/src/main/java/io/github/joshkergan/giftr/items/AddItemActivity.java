@@ -6,13 +6,22 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import io.github.joshkergan.giftr.BuildConfig;
+import io.github.joshkergan.giftr.GiftrActivity;
 import io.github.joshkergan.giftr.R;
 import io.github.joshkergan.giftr.db.GiftrDbHelper;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 /**
  * Created by Patrick on 2016-11-20.
@@ -24,57 +33,76 @@ import android.widget.TextView;
  * there, which is fine enough for a prototype.
   */
 
-// TODO: Make DB write an AsyncTask
 
-public class AddItemActivity extends AppCompatActivity {
+public class AddItemActivity extends GiftrActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final GiftrDbHelper dbHelper = GiftrDbHelper.getDbInstance(getApplicationContext());
-        setContentView(R.layout.add_item_view);
+        final View activityView = attachView(R.layout.add_item_view, this);
         Intent intent = getIntent();
-
-        // personId should NEVER EVER be -1, this filtering was done in the calling activity.
-        // If it is, something has gone very very catastrophically wrong.
         final int personId = intent.getIntExtra("PERSON_ID", -1);
-        if (BuildConfig.DEBUG && personId == -1) {
-            throw new AssertionError("PersonId was -1 in AddItemActivity! This should never happen!");
-        }
 
-        final String personName = intent.getStringExtra("PERSON_NAME");
 
-        // Append the person's name to the message field
-        TextView message = (TextView) findViewById(R.id.add_item_message);
-        message.setText(message.getText() + personName + ":");
+        final ArrayList<AmazonItem> addedItems = new ArrayList<AmazonItem>();
+        final AutoCompleteTextView autoComplete = (AutoCompleteTextView) findViewById(R.id.add_item_auto_complete);
+        ListView addedItemsView = (ListView) activityView.findViewById(R.id.added_items_layout);
+        final ArrayAdapter<AmazonItem> addedItemsAdapter =
+                new ArrayAdapter<AmazonItem>(activityView.getContext(), android.R.layout.simple_list_item_1);
+        addedItemsView.setAdapter(addedItemsAdapter);
 
-        // Set button callback, which will invoke the DB to save the interests
-        Button saveButton = (Button) findViewById(R.id.save_button);
-        saveButton.setOnClickListener(new View.OnClickListener() {
+
+
+        autoComplete.addTextChangedListener(new TextWatcher() {
+            boolean performedAPICall = false;
+            int prevLength = 0;
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                prevLength = s.length();
+                if (s.length() >= 2 && !performedAPICall) {
+                    performedAPICall = true;
+                    AsyncGetItems getItems = new AsyncGetItems();
+                    getItems.textView = autoComplete;
+                    getItems.context = activityView.getContext();
+                    getItems.execute(s.toString());
+                }
+                System.out.println(before);
+
+                if (prevLength < 2) {
+                    performedAPICall = false;
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        autoComplete.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                AmazonItem selectedItem = (AmazonItem) parent.getItemAtPosition(position);
+                addedItems.add(selectedItem);
+                addedItemsAdapter.add(selectedItem);
+                // we're auto-adding so we can empty the text bar
+                autoComplete.setText("");
+            }
+        });
+
+        Button saveItemsButton = (Button) activityView.findViewById(R.id.save_button);
+        saveItemsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Read the fields and add to DB
-                // TODO: implement the dynamic view from the top TODO so this
-                // is made nicer (i.e. a loop). As it is this is crap code.
-                String[] interests = new String[10];
-                interests[0] = ((EditText)findViewById(R.id.interest_field_1)).getText().toString();
-                interests[1] = ((EditText)findViewById(R.id.interest_field_2)).getText().toString();
-                interests[2] = ((EditText)findViewById(R.id.interest_field_3)).getText().toString();
-                interests[3] = ((EditText)findViewById(R.id.interest_field_4)).getText().toString();
-                interests[4] = ((EditText)findViewById(R.id.interest_field_5)).getText().toString();
-                interests[5] = ((EditText)findViewById(R.id.interest_field_6)).getText().toString();
-                interests[6] = ((EditText)findViewById(R.id.interest_field_7)).getText().toString();
-                interests[7] = ((EditText)findViewById(R.id.interest_field_8)).getText().toString();
-                interests[8] = ((EditText)findViewById(R.id.interest_field_9)).getText().toString();
-                interests[9] = ((EditText)findViewById(R.id.interest_field_10)).getText().toString();
-
-                for(String s : interests) {
-                    if(!s.isEmpty()) {
-                        dbHelper.addInterestToPersonById(dbHelper.getWritableDatabase(), personId, s);
-                    }
+                for (AmazonItem item: addedItems) {
+                    dbHelper.addInterestToPersonById(dbHelper.getWritableDatabase(), 1, item);
                 }
-
-                // Go back to previous activity
-                finish();
+                Intent itemsIntent = new Intent(activityView.getContext(), ItemActivity.class);
+                startActivity(itemsIntent);
             }
         });
     }

@@ -17,7 +17,9 @@ public final class ItemContract{
         public static final String TABLE_NAME = "Item";
         // This contains the item's full name, TYPE: STRING
         public static final String COLUMN_NAME_ITEM = "itemName";
-        // Contains a reference to the photo stored for this item, TYPE: BLOB
+        // Contains a reference to the photo stored for this item, TYPE: STRING
         public static final String COLUMN_NAME_PHOTO = "photo";
+        // Contains a reference to the amazon url for this item, TPYE:STRING
+        public static final String COLUMN_NAME_AMAZON_URL = "amazonUrl";
     }
 }

@@ -2,123 +2,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-
     <TextView
-        android:text="Add interest(s) for "
+        android:text="@string/add_item_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/add_item_message"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
 
-    <EditText
+    <AutoCompleteTextView
+        android:id="@+id/add_item_auto_complete"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textAutoCorrect|textAutoComplete"
-        android:ems="10"
-        android:id="@+id/interest_field_1"
-        android:hint="Interest"
-        android:selectAllOnFocus="true"
-        android:singleLine="true"
-        android:contentDescription="Interest" />
+        android:layout_marginTop="5dp"
+        android:ems="10" />
 
-    <EditText
+    <ListView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textAutoCorrect|textAutoComplete"
-        android:ems="10"
-        android:id="@+id/interest_field_2"
-        android:hint="Interest"
-        android:selectAllOnFocus="true"
-        android:singleLine="true"
-        android:contentDescription="Interest" />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textAutoCorrect|textAutoComplete"
-        android:ems="10"
-        android:id="@+id/interest_field_3"
-        android:hint="Interest"
-        android:selectAllOnFocus="true"
-        android:singleLine="true"
-        android:contentDescription="Interest" />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textAutoCorrect|textAutoComplete"
-        android:ems="10"
-        android:id="@+id/interest_field_4"
-        android:hint="Interest"
-        android:selectAllOnFocus="true"
-        android:singleLine="true"
-        android:contentDescription="Interest" />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textAutoCorrect|textAutoComplete"
-        android:ems="10"
-        android:id="@+id/interest_field_5"
-        android:hint="Interest"
-        android:selectAllOnFocus="true"
-        android:singleLine="true"
-        android:contentDescription="Interest" />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textAutoCorrect|textAutoComplete"
-        android:ems="10"
-        android:id="@+id/interest_field_6"
-        android:hint="Interest"
-        android:selectAllOnFocus="true"
-        android:singleLine="true"
-        android:contentDescription="Interest" />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textAutoCorrect|textAutoComplete"
-        android:ems="10"
-        android:id="@+id/interest_field_7"
-        android:hint="Interest"
-        android:selectAllOnFocus="true"
-        android:singleLine="true"
-        android:contentDescription="Interest" />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textAutoCorrect|textAutoComplete"
-        android:ems="10"
-        android:id="@+id/interest_field_8"
-        android:hint="Interest"
-        android:selectAllOnFocus="true"
-        android:singleLine="true"
-        android:contentDescription="Interest" />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textAutoCorrect|textAutoComplete"
-        android:ems="10"
-        android:id="@+id/interest_field_9"
-        android:hint="Interest"
-        android:selectAllOnFocus="true"
-        android:singleLine="true"
-        android:contentDescription="Interest" />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textAutoCorrect|textAutoComplete"
-        android:ems="10"
-        android:id="@+id/interest_field_10"
-        android:hint="Interest"
-        android:selectAllOnFocus="true"
-        android:singleLine="true"
-        android:contentDescription="Interest" />
+        android:layout_height="380dp"
+        android:orientation="vertical"
+        android:id="@+id/added_items_layout" />
 
     <Button
         android:text="Save!"

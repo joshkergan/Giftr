@@ -99,6 +99,7 @@ public abstract class GiftrActivity extends AppCompatActivity implements Navigat
         if (lis != null){
             navView.setNavigationItemSelectedListener(lis);
         }
+
         attachedView = getLayoutInflater().inflate(id, baseView);
         attachedView.getLayoutParams();
         return attachedView;

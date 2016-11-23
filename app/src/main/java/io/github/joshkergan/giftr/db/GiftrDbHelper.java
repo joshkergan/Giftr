@@ -1,5 +1,6 @@
 package io.github.joshkergan.giftr.db;
 
+import android.content.ClipData;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -8,7 +9,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 
 import java.io.ByteArrayOutputStream;
+import java.sql.Date;
 
+import io.github.joshkergan.giftr.items.AmazonItem;
 import io.github.joshkergan.giftr.items.ItemContract;
 import io.github.joshkergan.giftr.people.PeopleContract;
 
@@ -18,19 +21,25 @@ import io.github.joshkergan.giftr.people.PeopleContract;
  */
 
 public final class GiftrDbHelper extends SQLiteOpenHelper{
+    // The single instance of the DB
+    private static GiftrDbHelper sInstance;
+
     // Some helpers for Types
     public static final int DATABASE_VERSION = 1;
     // Constants to preform the normal actions on the DB.
     public static final String DATABASE_NAME = "Giftr.db";
+
     private static final String TEXT_TYPE = " TEXT";
     private static final String DATA_TYPE = " BLOB";
     private static final String DATE_TYPE = " DATE";
     private static final String INTEGER_TYPE = " INTEGER";
+
     private static final String SQL_CREATE_PEOPLE_TABLE =
             "CREATE TABLE " + PeopleContract.PeopleEntry.TABLE_NAME +
                     " (" + PeopleContract.PeopleEntry._ID + INTEGER_TYPE + " PRIMARY KEY," +
                     PeopleContract.PeopleEntry.COLUMN_NAME_PERSON + TEXT_TYPE + " ," +
                     PeopleContract.PeopleEntry.COLUMN_NAME_PHOTO + DATA_TYPE + " );\n";
+
     // TODO: Remove image field
     // TODO: Change primary key to the name field (because two interests with the same name should
     // be considered the same interest, and ID numbers as the PK lose this property).
@@ -38,7 +47,9 @@ public final class GiftrDbHelper extends SQLiteOpenHelper{
             "CREATE TABLE " + ItemContract.ItemEntry.TABLE_NAME +
                     " (" + ItemContract.ItemEntry._ID + INTEGER_TYPE + " PRIMARY KEY," +
                     ItemContract.ItemEntry.COLUMN_NAME_ITEM + TEXT_TYPE + " ," +
-                    ItemContract.ItemEntry.COLUMN_NAME_PHOTO + DATA_TYPE + " );";
+                    ItemContract.ItemEntry.COLUMN_NAME_AMAZON_URL + TEXT_TYPE + " ," +
+                    ItemContract.ItemEntry.COLUMN_NAME_PHOTO + TEXT_TYPE + " );";
+
     // TODO: Add primary key constraint on (person, mapping) pair. Make this gel with the primary
     // key change on the items table.
     private static final String SQL_CREATE_MAPPING_TABLE =
@@ -50,12 +61,11 @@ public final class GiftrDbHelper extends SQLiteOpenHelper{
                     " ) REFERENCES " + PeopleContract.PeopleEntry.TABLE_NAME + "(" + PeopleContract.PeopleEntry._ID +
                     ")" + "FOREIGN KEY(" + MappingContract.MappingEntry.COLUMN_NAME_ITEM_ID +
                     ") REFERENCES " + ItemContract.ItemEntry._ID + ");";
+    // One ( closes the FOREIGN KEY statement, the other closes the CREATE TABLE statement
+
     private static final String SQL_CREATE_ENTRIES = SQL_CREATE_PEOPLE_TABLE +
             SQL_CREATE_ITEM_TABLE +
             SQL_CREATE_MAPPING_TABLE;
-    // One ( closes the FOREIGN KEY statement, the other closes the CREATE TABLE statement
-    // The single instance of the DB
-    private static GiftrDbHelper sInstance;
 
     // Use the getInstance method to get the DB instance
     private GiftrDbHelper(Context context) {
@@ -82,22 +92,15 @@ public final class GiftrDbHelper extends SQLiteOpenHelper{
         // spaghetti code.
     }
 
-    public Cursor getPersonInfo(SQLiteDatabase db, long id) {
+    public Cursor getPersonInfo(SQLiteDatabase db, int id) {
         final String PERSON_QUERY = "SELECT * FROM " + PeopleContract.PeopleEntry.TABLE_NAME +
-                " WHERE " +
+                " LEFT JOIN " + MappingContract.MappingEntry.TABLE_NAME + " ON " +
+                PeopleContract.PeopleEntry.TABLE_NAME + "." + PeopleContract.PeopleEntry._ID + " = "
+                + MappingContract.MappingEntry.TABLE_NAME + "." +
+                MappingContract.MappingEntry.COLUMN_NAME_PERSON_ID + " WHERE " +
                 PeopleContract.PeopleEntry._ID + " = ?";
 
-        return db.query(true,
-                PeopleContract.PeopleEntry.TABLE_NAME,
-                new String[]{PeopleContract.PeopleEntry.COLUMN_NAME_PERSON,
-                        PeopleContract.PeopleEntry.COLUMN_NAME_PHOTO},
-                PeopleContract.PeopleEntry._ID + "=?",
-                new String[]{String.valueOf(id)},
-                null,
-                null,
-                null,
-                null
-        );
+        return db.rawQuery(PERSON_QUERY, new String[]{String.valueOf(id)});
     }
 
     public void createPerson(SQLiteDatabase db, String name, Bitmap image) {
@@ -124,15 +127,14 @@ public final class GiftrDbHelper extends SQLiteOpenHelper{
      * TODO: Either add image parameter to this or remove the image from the item table entirely.
      *                 Second is recommended.
      */
-    public void addInterestToPersonById(SQLiteDatabase db, int personId, String interest) {
+    public void addInterestToPersonById(SQLiteDatabase db, int personId, AmazonItem item) {
         ContentValues itemTableValues = new ContentValues();
         ContentValues mappingTableValues = new ContentValues();
 
-        itemTableValues.put(ItemContract.ItemEntry.COLUMN_NAME_ITEM, interest);
-        itemTableValues.putNull(ItemContract.ItemEntry.COLUMN_NAME_PHOTO); // TODO: Remove this later if images are removed
-
+        itemTableValues.put(ItemContract.ItemEntry.COLUMN_NAME_ITEM, item.name);
+        itemTableValues.put(ItemContract.ItemEntry.COLUMN_NAME_PHOTO, item.imageUrl);
+        itemTableValues.put(ItemContract.ItemEntry.COLUMN_NAME_AMAZON_URL, item.url);
         //  insert into the items table first, to get the key o add to the mapping.
-        // TODO: FIX THAT PRIMARY KEY !!!!1!1!
         long itemId = db.insertWithOnConflict (ItemContract.ItemEntry.TABLE_NAME,
                 null,
                 itemTableValues,
@@ -143,7 +145,6 @@ public final class GiftrDbHelper extends SQLiteOpenHelper{
         mappingTableValues.putNull(MappingContract.MappingEntry.COLUMN_NAME_DATE);
         mappingTableValues.put(MappingContract.MappingEntry.COLUMN_NAME_ITEM_ID, itemId);
 
-        // TODO: ALSO FIX THAT PRIMARY KEY !2!!!2!
         db.insertWithOnConflict(MappingContract.MappingEntry.TABLE_NAME,
                 null,
                 mappingTableValues,
