@@ -1,6 +1,5 @@
 package io.github.joshkergan.giftr;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 
@@ -8,7 +7,7 @@ import android.os.PersistableBundle;
  * Created by Josh on 16/10/2016.
  * Stub Activity for working with People Activity
  */
-public class ItemsActivityStub extends Activity{
+public class ItemsActivityStub extends GiftrActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,5 +17,6 @@ public class ItemsActivityStub extends Activity{
     @Override
     public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);
+        attachView(R.layout.test);
     }
 }
