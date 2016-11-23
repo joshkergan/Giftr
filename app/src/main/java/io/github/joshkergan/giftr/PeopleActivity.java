@@ -35,9 +35,9 @@ final public class PeopleActivity extends AppCompatActivity
 
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        activityView = getLayoutInflater().inflate(R.layout.activity_people, null);
-        setContentView(activityView);
-        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        setContentView(R.layout.people_activity);
+        activityView = findViewById(R.id.drawer_layout);
+        final DrawerLayout drawer = (DrawerLayout) activityView;
         final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         final RecyclerView peopleList = (RecyclerView) findViewById(R.id.list_people);
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -45,7 +45,6 @@ final public class PeopleActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         pDbHelper = GiftrDbHelper.getDbInstance(this);
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -77,6 +76,7 @@ final public class PeopleActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+        MenuItem peopleItem = (MenuItem) drawer.findViewById(R.id.nav_people);
 
         navigationView.inflateHeaderView(R.layout.nav_header_people);
         navigationView.setNavigationItemSelectedListener(this);
@@ -138,7 +138,9 @@ final public class PeopleActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_items){
+        if (id == R.id.nav_people) {
+            // This is the current item
+        } else if (id == R.id.nav_items){
             // Handle navigating to items activity
             Intent itemsIntent = new Intent(this, ItemsActivityStub.class);
             startActivity(itemsIntent);

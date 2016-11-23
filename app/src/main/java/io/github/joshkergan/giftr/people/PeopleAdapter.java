@@ -29,10 +29,8 @@ public final class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.View
     private final static String order = PeopleContract.PeopleEntry.COLUMN_NAME_PERSON + " ASC";
     private SQLiteDatabase dbReadConnection;
     private boolean validData = true;
-    @Nullable
-    private Cursor c;
-    @Nullable
-    private OnItemClickListener mlistener;
+    @Nullable private Cursor c;
+    @Nullable private OnItemClickListener mlistener;
 
     public PeopleAdapter(SQLiteDatabase giftrDb, @Nullable OnItemClickListener listener) {
         super();
@@ -70,7 +68,6 @@ public final class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.View
         holder.mFriendName.setText(
                 c.getString(c.getColumnIndex(PeopleContract.PeopleEntry.COLUMN_NAME_PERSON))
         );
-        holder.mposition = position;
         holder.itemView.setOnClickListener(holder);
     }
 
@@ -98,7 +95,6 @@ public final class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.View
     static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         CircleImageView mFriendIcon;
         TextView mFriendName;
-        int mposition;
         @Nullable
         OnItemClickListener mListner;
 
@@ -111,9 +107,9 @@ public final class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.View
 
         @Override
         public void onClick(View v) {
-            Log.d("RecyclerView.ViewHolder", "onClick: Person Element id: " + mposition);
+            Log.d("RecyclerView.ViewHolder", "onClick: Person Element id: " + getAdapterPosition());
             if (mListner != null){
-                mListner.OnItemClick(mposition);
+                mListner.OnItemClick(getAdapterPosition());
             }
         }
     }
