@@ -15,6 +15,7 @@ import android.widget.Toast;
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.github.joshkergan.giftr.db.GiftrDbHelper;
 import io.github.joshkergan.giftr.items.AddItemActivity;
+import io.github.joshkergan.giftr.items.IndividualItemActivity;
 import io.github.joshkergan.giftr.people.PeopleContract;
 import io.github.joshkergan.giftr.people.PersonAdapter;
 
@@ -28,7 +29,7 @@ public final class PersonActivity extends GiftrActivity{
     private long personId;
     private RecyclerView itemsView;
     private GiftrDbHelper pDbHelper;
-
+    private PersonAdapter personAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,13 +67,15 @@ public final class PersonActivity extends GiftrActivity{
                 startActivity(addItemIntent);
             }
         });
-
-        itemsView.setAdapter(new PersonAdapter(pDbHelper.getReadableDatabase(), personId, new PersonAdapter.OnItemClickListener(){
+        personAdapter = new PersonAdapter(pDbHelper.getReadableDatabase(), personId, new PersonAdapter.OnItemClickListener(){
             @Override
             public void OnItemClick(int position) {
-                Toast.makeText(getApplicationContext(), "Coming Soon!", Toast.LENGTH_SHORT).show();
+                Intent itemIntent = new Intent(getApplicationContext(), IndividualItemActivity.class);
+                itemIntent.putExtra("ItemId", personAdapter.getItemId(position));
+                startActivity(itemIntent);
             }
-        }));
+        });
+        itemsView.setAdapter(personAdapter);
     }
 
     @Override

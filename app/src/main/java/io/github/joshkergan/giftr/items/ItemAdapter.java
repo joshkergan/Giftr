@@ -13,7 +13,6 @@ import io.github.joshkergan.giftr.R;
  * Created by Patrick on 2016-10-17.
  */
 
-// TODO: Investigate using a CursorLoader for nice async queries.
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     // the database ID that identifies the person we're showing items for.
@@ -41,7 +40,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         c.moveToPosition(position);
         String itemName = c.getString(c.getColumnIndex(ItemContract.ItemEntry.COLUMN_NAME_ITEM));
         vh.mItemName.setText(itemName);
-        // Will also eventually need to set the photo for this
     }
 
     @Override

@@ -42,7 +42,7 @@
         <activity android:name=".SettingsActivity"/>
         <activity android:name=".items.ItemActivity"/>
         <activity android:name=".items.AddItemActivity"/>
-
+        <activity android:name=".items.IndividualItemActivity"/>
     </application>
 
 </manifest>

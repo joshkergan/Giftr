@@ -7,6 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="io.github.joshkergan.giftr.PersonActivity">
 
     <LinearLayout
@@ -16,7 +17,7 @@
         android:orientation="horizontal">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/person_image"
+            android:id="@+id/item_image"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="96dp"
             android:layout_height="96dp"
@@ -24,15 +25,21 @@
             app:civ_border_width="2dp"/>
 
         <TextView
-            android:id="@+id/person_name"
+            android:id="@+id/item_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:text="@string/testString"/>
     </LinearLayout>
 
+    <Button
+        android:text="@string/amazon_url_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_go_to_amazon" />
+
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/person_interests"
+        android:id="@+id/item_owners"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="25dp"

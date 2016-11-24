@@ -97,6 +97,20 @@ public final class GiftrDbHelper extends SQLiteOpenHelper{
                 null
         );
     }
+    public Cursor getItemInfo(SQLiteDatabase db, long id) {
+        return db.query(true,
+                ItemContract.ItemEntry.TABLE_NAME,
+                new String[]{ItemContract.ItemEntry.COLUMN_NAME_ITEM,
+                        ItemContract.ItemEntry.COLUMN_NAME_PHOTO,
+                        ItemContract.ItemEntry.COLUMN_NAME_AMAZON_URL},
+                ItemContract.ItemEntry._ID + "=?",
+                new String[]{String.valueOf(id)},
+                null,
+                null,
+                null,
+                null
+        );
+    }
 
     public void createPerson(SQLiteDatabase db, String name, Bitmap image) {
         ContentValues personValues = new ContentValues();
@@ -122,7 +136,7 @@ public final class GiftrDbHelper extends SQLiteOpenHelper{
      * TODO: Either add image parameter to this or remove the image from the item table entirely.
      *                 Second is recommended.
      */
-    public void addInterestToPersonById(SQLiteDatabase db, int personId, AmazonItem item) {
+    public void addInterestToPersonById(SQLiteDatabase db, long personId, AmazonItem item) {
         ContentValues itemTableValues = new ContentValues();
         ContentValues mappingTableValues = new ContentValues();
 
