@@ -16,7 +16,7 @@
         android:layout_height="wrap_content">
             <AutoCompleteTextView
                 android:id="@+id/add_item_auto_complete"
-                android:layout_width="361dp"
+                android:layout_width="310dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:ems="10" />
