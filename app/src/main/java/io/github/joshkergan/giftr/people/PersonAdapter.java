@@ -91,7 +91,7 @@ public class PersonAdapter extends RecyclerView.Adapter<PersonAdapter.ViewHolder
             super(itemView);
             mListener = listener;
             mItemName = (TextView) itemView.findViewById(R.id.item_name);
-            mImageView = (CircleImageView) itemView.findViewById(R.id.item_image);
+            //mImageView = (CircleImageView) itemView.findViewById(R.id.item_image);
         }
 
         @Override

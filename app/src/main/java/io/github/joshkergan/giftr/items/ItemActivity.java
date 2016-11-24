@@ -28,15 +28,6 @@ public class ItemActivity extends GiftrActivity{
         itemlist.setHasFixedSize(false);
         itemlist.setLayoutManager(new GridLayoutManager(this, 1));
         itemlist.setAdapter(adapt);
-        // Set the onclick functionality for the FAB
-        FloatingActionButton fab = (FloatingActionButton) activityView.findViewById(R.id.fab_add_item);
-        fab.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent itemsIntent = new Intent(activityView.getContext(), AddItemActivity.class);
-                startActivity(itemsIntent);
-                //final View addItem = attachView(R.layout.add_item_view);
-            }
-        });
     }
 
     @Override
