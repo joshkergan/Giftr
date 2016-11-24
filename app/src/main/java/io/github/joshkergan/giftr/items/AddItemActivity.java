@@ -1,15 +1,7 @@
 package io.github.joshkergan.giftr.items;
 
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-
-import io.github.joshkergan.giftr.BuildConfig;
-import io.github.joshkergan.giftr.GiftrActivity;
-import io.github.joshkergan.giftr.R;
-import io.github.joshkergan.giftr.db.GiftrDbHelper;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -17,11 +9,13 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import io.github.joshkergan.giftr.GiftrActivity;
+import io.github.joshkergan.giftr.R;
+import io.github.joshkergan.giftr.db.GiftrDbHelper;
 
 /**
  * Created by Patrick on 2016-11-20.
@@ -34,7 +28,7 @@ import java.util.ArrayList;
   */
 
 
-public class AddItemActivity extends GiftrActivity {
+public class AddItemActivity extends GiftrActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,8 +46,7 @@ public class AddItemActivity extends GiftrActivity {
         addedItemsView.setAdapter(addedItemsAdapter);
 
 
-
-        autoComplete.addTextChangedListener(new TextWatcher() {
+        autoComplete.addTextChangedListener(new TextWatcher(){
             boolean performedAPICall = false;
             int prevLength = 0;
             @Override
@@ -63,7 +56,7 @@ public class AddItemActivity extends GiftrActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 prevLength = s.length();
-                if (s.length() >= 2 && !performedAPICall) {
+                if (s.length() >= 2 && !performedAPICall){
                     performedAPICall = true;
                     AsyncGetItems getItems = new AsyncGetItems();
                     getItems.textView = autoComplete;
@@ -72,7 +65,7 @@ public class AddItemActivity extends GiftrActivity {
                 }
                 System.out.println(before);
 
-                if (prevLength < 2) {
+                if (prevLength < 2){
                     performedAPICall = false;
                 }
             }
@@ -83,7 +76,7 @@ public class AddItemActivity extends GiftrActivity {
             }
         });
 
-        autoComplete.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        autoComplete.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 AmazonItem selectedItem = (AmazonItem) parent.getItemAtPosition(position);
@@ -95,10 +88,10 @@ public class AddItemActivity extends GiftrActivity {
         });
 
         Button saveItemsButton = (Button) activityView.findViewById(R.id.save_button);
-        saveItemsButton.setOnClickListener(new View.OnClickListener() {
+        saveItemsButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                for (AmazonItem item: addedItems) {
+                for (AmazonItem item : addedItems){
                     dbHelper.addInterestToPersonById(dbHelper.getWritableDatabase(), 1, item);
                 }
                 Intent itemsIntent = new Intent(activityView.getContext(), ItemActivity.class);

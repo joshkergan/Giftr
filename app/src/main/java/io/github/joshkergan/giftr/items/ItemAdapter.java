@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import io.github.joshkergan.giftr.R;
-import io.github.joshkergan.giftr.db.MappingContract;
 
 /**
  * Created by Patrick on 2016-10-17.
@@ -17,13 +16,13 @@ import io.github.joshkergan.giftr.db.MappingContract;
 // TODO: Investigate using a CursorLoader for nice async queries.
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
-    private final Cursor c;
-    private final SQLiteDatabase dbConnection;
     // the database ID that identifies the person we're showing items for.
     // We expect this to be a valid integer value that corresponds to a person ID in the database.
     private final static String rawSqlQuery =
             "SELECT * FROM " +
-            ItemContract.ItemEntry.TABLE_NAME + "; ";
+                    ItemContract.ItemEntry.TABLE_NAME + "; ";
+    private final Cursor c;
+    private final SQLiteDatabase dbConnection;
 
     public ItemAdapter(SQLiteDatabase db) {
         this.dbConnection = db;
@@ -46,17 +45,17 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     }
 
     @Override
-    public int getItemCount() {
-        return c.getCount();
-    }
-
-    @Override
     public long getItemId(int position) {
         if(c.moveToPosition(position)) {
             return c.getLong(c.getColumnIndex(ItemContract.ItemEntry._ID));
         } else {
             return RecyclerView.NO_ID;
         }
+    }
+
+    @Override
+    public int getItemCount() {
+        return c.getCount();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
