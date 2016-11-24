@@ -122,7 +122,7 @@ public final class GiftrDbHelper extends SQLiteOpenHelper{
      * TODO: Either add image parameter to this or remove the image from the item table entirely.
      *                 Second is recommended.
      */
-    public void addInterestToPersonById(SQLiteDatabase db, int personId, AmazonItem item) {
+    public void addInterestToPersonById(SQLiteDatabase db, long personId, AmazonItem item) {
         ContentValues itemTableValues = new ContentValues();
         ContentValues mappingTableValues = new ContentValues();
 

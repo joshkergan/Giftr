@@ -38,8 +38,10 @@ final public class PeopleActivity extends GiftrActivity{
         fab.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Intent addPersonIntent = new Intent(getApplicationContext(), AddPersonActivity.class);
-                startActivity(addPersonIntent);
+                Intent importContactIntent = new Intent(getApplicationContext(), ContactImportActivity.class);
+                startActivity(importContactIntent);
+                //Intent addPersonIntent = new Intent(getApplicationContext(), AddPersonActivity.class);
+                //startActivity(addPersonIntent);
             }
         });
 
