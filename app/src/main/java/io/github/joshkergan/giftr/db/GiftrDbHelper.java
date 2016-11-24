@@ -1,6 +1,5 @@
 package io.github.joshkergan.giftr.db;
 
-import android.content.ClipData;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -9,7 +8,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 
 import java.io.ByteArrayOutputStream;
-import java.sql.Date;
 
 import io.github.joshkergan.giftr.items.AmazonItem;
 import io.github.joshkergan.giftr.items.ItemContract;
@@ -21,25 +19,19 @@ import io.github.joshkergan.giftr.people.PeopleContract;
  */
 
 public final class GiftrDbHelper extends SQLiteOpenHelper{
-    // The single instance of the DB
-    private static GiftrDbHelper sInstance;
-
     // Some helpers for Types
     public static final int DATABASE_VERSION = 1;
     // Constants to preform the normal actions on the DB.
     public static final String DATABASE_NAME = "Giftr.db";
-
     private static final String TEXT_TYPE = " TEXT";
     private static final String DATA_TYPE = " BLOB";
     private static final String DATE_TYPE = " DATE";
     private static final String INTEGER_TYPE = " INTEGER";
-
     private static final String SQL_CREATE_PEOPLE_TABLE =
             "CREATE TABLE " + PeopleContract.PeopleEntry.TABLE_NAME +
                     " (" + PeopleContract.PeopleEntry._ID + INTEGER_TYPE + " PRIMARY KEY," +
                     PeopleContract.PeopleEntry.COLUMN_NAME_PERSON + TEXT_TYPE + " ," +
                     PeopleContract.PeopleEntry.COLUMN_NAME_PHOTO + DATA_TYPE + " );\n";
-
     // TODO: Remove image field
     // TODO: Change primary key to the name field (because two interests with the same name should
     // be considered the same interest, and ID numbers as the PK lose this property).
@@ -49,7 +41,6 @@ public final class GiftrDbHelper extends SQLiteOpenHelper{
                     ItemContract.ItemEntry.COLUMN_NAME_ITEM + TEXT_TYPE + " ," +
                     ItemContract.ItemEntry.COLUMN_NAME_AMAZON_URL + TEXT_TYPE + " ," +
                     ItemContract.ItemEntry.COLUMN_NAME_PHOTO + TEXT_TYPE + " );";
-
     // TODO: Add primary key constraint on (person, mapping) pair. Make this gel with the primary
     // key change on the items table.
     private static final String SQL_CREATE_MAPPING_TABLE =
@@ -61,11 +52,12 @@ public final class GiftrDbHelper extends SQLiteOpenHelper{
                     " ) REFERENCES " + PeopleContract.PeopleEntry.TABLE_NAME + "(" + PeopleContract.PeopleEntry._ID +
                     ")" + "FOREIGN KEY(" + MappingContract.MappingEntry.COLUMN_NAME_ITEM_ID +
                     ") REFERENCES " + ItemContract.ItemEntry._ID + ");";
-    // One ( closes the FOREIGN KEY statement, the other closes the CREATE TABLE statement
-
     private static final String SQL_CREATE_ENTRIES = SQL_CREATE_PEOPLE_TABLE +
             SQL_CREATE_ITEM_TABLE +
             SQL_CREATE_MAPPING_TABLE;
+    // One ( closes the FOREIGN KEY statement, the other closes the CREATE TABLE statement
+    // The single instance of the DB
+    private static GiftrDbHelper sInstance;
 
     // Use the getInstance method to get the DB instance
     private GiftrDbHelper(Context context) {
@@ -92,15 +84,18 @@ public final class GiftrDbHelper extends SQLiteOpenHelper{
         // spaghetti code.
     }
 
-    public Cursor getPersonInfo(SQLiteDatabase db, int id) {
-        final String PERSON_QUERY = "SELECT * FROM " + PeopleContract.PeopleEntry.TABLE_NAME +
-                " LEFT JOIN " + MappingContract.MappingEntry.TABLE_NAME + " ON " +
-                PeopleContract.PeopleEntry.TABLE_NAME + "." + PeopleContract.PeopleEntry._ID + " = "
-                + MappingContract.MappingEntry.TABLE_NAME + "." +
-                MappingContract.MappingEntry.COLUMN_NAME_PERSON_ID + " WHERE " +
-                PeopleContract.PeopleEntry._ID + " = ?";
-
-        return db.rawQuery(PERSON_QUERY, new String[]{String.valueOf(id)});
+    public Cursor getPersonInfo(SQLiteDatabase db, long id) {
+        return db.query(true,
+                PeopleContract.PeopleEntry.TABLE_NAME,
+                new String[]{PeopleContract.PeopleEntry.COLUMN_NAME_PERSON,
+                        PeopleContract.PeopleEntry.COLUMN_NAME_PHOTO},
+                PeopleContract.PeopleEntry._ID + "=?",
+                new String[]{String.valueOf(id)},
+                null,
+                null,
+                null,
+                null
+        );
     }
 
     public void createPerson(SQLiteDatabase db, String name, Bitmap image) {
