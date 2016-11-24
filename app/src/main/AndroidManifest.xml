@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="io.github.joshkergan.giftr">
+<manifest package="io.github.joshkergan.giftr"
+          xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
@@ -39,8 +39,11 @@
         <activity android:name=".ItemsActivityStub" />
         <activity android:name=".SettingsActivity" />
         <activity android:name=".items.ItemActivity" />
-        <activity android:name=".items.AddItemActivity" />
-        <activity android:name=".ContactImportActivity" />
+        <activity
+            android:name=".items.AddItemActivity"
+            android:noHistory="true"/>
+        <activity
+            android:name=".ContactImportActivity"
             android:theme="@style/AppTheme"/>
         <activity android:name=".items.IndividualItemActivity"/>
     </application>

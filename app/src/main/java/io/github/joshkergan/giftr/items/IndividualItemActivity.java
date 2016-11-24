@@ -55,7 +55,6 @@ public class IndividualItemActivity extends GiftrActivity {
 
         itemId = infoIntent.getLongExtra("ItemId", -1);
 
-
         pDbHelper = GiftrDbHelper.getDbInstance(this);
         final View activityView = attachView(R.layout.individual_item, this);
 
@@ -116,6 +115,7 @@ public class IndividualItemActivity extends GiftrActivity {
                     public void onItemClick(int position) {
                         Intent personIntent = new Intent(getApplicationContext(), PersonActivity.class);
                         personIntent.putExtra("PersonID", peopleAdapter.getItemId(position));
+                        startActivity(personIntent);
                     }
                 }
         );

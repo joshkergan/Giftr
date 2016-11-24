@@ -12,6 +12,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 
 import io.github.joshkergan.giftr.db.GiftrDbHelper;
 import io.github.joshkergan.giftr.items.ItemActivity;
@@ -25,6 +27,7 @@ final public class PeopleActivity extends GiftrActivity{
     private RecyclerView peopleList;
     private PeopleAdapter.OnItemClickListener peopleAction;
     private PeopleAdapter listAdapter;
+    private View.OnClickListener fabListener;
 
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,16 +37,75 @@ final public class PeopleActivity extends GiftrActivity{
 
         pDbHelper = GiftrDbHelper.getDbInstance(this);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener(){
+        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+
+        final Animation.AnimationListener fabRotate = new Animation.AnimationListener(){
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                if (fab.getRotation() == 0){
+                    fab.setRotation(405);
+                }else{
+                    fab.setRotation(0);
+                }
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        };
+
+        fabListener = (new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Intent importContactIntent = new Intent(getApplicationContext(), ContactImportActivity.class);
-                startActivity(importContactIntent);
-                //Intent addPersonIntent = new Intent(getApplicationContext(), AddPersonActivity.class);
-                //startActivity(addPersonIntent);
+                final RotateAnimation rotateAnimation = new RotateAnimation(0, 405, fab.getPivotX(), fab.getPivotY());
+                rotateAnimation.setDuration(500);
+                rotateAnimation.setAnimationListener(fabRotate);
+
+                // Create the new FABs and display them
+                final View newContact = findViewById(R.id.add_new_person_fab);
+                final View importContact = findViewById(R.id.import_person_fab);
+
+                newContact.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+                        Intent addPersonIntent = new Intent(getApplicationContext(), AddPersonActivity.class);
+                        startActivity(addPersonIntent);
+                    }
+                });
+
+                importContact.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+                        Intent importContactIntent = new Intent(getApplicationContext(), ContactImportActivity.class);
+                        startActivity(importContactIntent);
+                    }
+                });
+
+                fab.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+                        newContact.setVisibility(View.GONE);
+                        importContact.setVisibility(View.GONE);
+                        v.startAnimation(rotateAnimation);
+                        v.setOnClickListener(fabListener);
+                    }
+                });
+
+                fab.startAnimation(rotateAnimation);
+                newContact.setVisibility(View.VISIBLE);
+                importContact.setVisibility(View.VISIBLE);
+
+
             }
         });
+
+        fab.setOnClickListener(fabListener);
 
         peopleAction = new PeopleAdapter.OnItemClickListener(){
             @Override

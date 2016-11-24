@@ -39,4 +39,6 @@
         limitations under the License.
     </string>
     <string name="contact_import_button">Import Contact(s)</string>
+    <string name="add_person_label">Add New Person</string>
+    <string name="import_person_label">Add from Contacts</string>
 </resources>
