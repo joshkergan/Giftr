@@ -5,16 +5,14 @@ import android.os.AsyncTask;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-import io.github.joshkergan.giftr.items.AmazonItem;
 
 /**
  * Created by balaji on 11/20/2016.
@@ -23,9 +21,10 @@ import io.github.joshkergan.giftr.items.AmazonItem;
 
 public class AsyncGetItems extends AsyncTask<String, Void, List<AmazonItem>>{
 
+    static String url = "http://10.0.2.2:8080/search/";
     public AutoCompleteTextView textView = null;
     Context context = null;
-    static String url = "http://10.0.2.2:8080/search/";
+
     // Takes in a string search parameter
     // returns array of objects
     protected List<AmazonItem> doInBackground(String... strings) {
