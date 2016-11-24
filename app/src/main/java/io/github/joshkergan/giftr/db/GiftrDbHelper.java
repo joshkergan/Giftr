@@ -131,7 +131,7 @@ public final class GiftrDbHelper extends SQLiteOpenHelper{
      * @param db The database to update
      * @param personId The ID number (in the database db) of the person to update the interests of.
      *                 NOTE: This is assumed to be a valid ID, i.e. it exists in db somewhere.
-     * @param interest The interest string to add.
+     * @param item The item to add to the person.
      *
      * TODO: Either add image parameter to this or remove the image from the item table entirely.
      *                 Second is recommended.

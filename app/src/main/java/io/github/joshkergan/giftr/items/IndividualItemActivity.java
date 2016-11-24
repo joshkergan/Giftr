@@ -6,8 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.graphics.BitmapCompat;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
@@ -20,9 +18,9 @@ import java.net.URL;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.github.joshkergan.giftr.GiftrActivity;
+import io.github.joshkergan.giftr.PersonActivity;
 import io.github.joshkergan.giftr.R;
 import io.github.joshkergan.giftr.db.GiftrDbHelper;
-import io.github.joshkergan.giftr.people.PeopleContract;
 
 /**
  * Created by balaji on 11/23/2016.
@@ -32,6 +30,24 @@ public class IndividualItemActivity extends GiftrActivity {
 
     private long itemId;
     private GiftrDbHelper pDbHelper;
+    private IndividualItemAdapter peopleAdapter;
+
+    // credit goes to http://stackoverflow.com/questions/8992964/android-load-from-url-to-bitmap
+    public static Bitmap getBitmapFromURL(String src) {
+        try {
+            URL url = new URL(src);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            return myBitmap;
+        } catch (IOException e) {
+            // Log exception
+            return null;
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,14 +62,14 @@ public class IndividualItemActivity extends GiftrActivity {
         TextView nameView = (TextView) findViewById(R.id.item_name);
         Button goToAmazon = (Button) findViewById(R.id.btn_go_to_amazon);
         final CircleImageView imageView = (CircleImageView) findViewById(R.id.item_image);
-        RecyclerView peopleView = (RecyclerView) findViewById(R.id.item_owners);
+        final RecyclerView peopleView = (RecyclerView) findViewById(R.id.item_owners);
 
 
         // We deal with a person not being passed in by loading the last item that got saved
         if (itemId == -1 && savedInstanceState != null){
             itemId = savedInstanceState.getLong("ItemId");
         }
-        Cursor personInfo = pDbHelper.getItemInfo(pDbHelper.getReadableDatabase(), itemId);
+        final Cursor personInfo = pDbHelper.getItemInfo(pDbHelper.getReadableDatabase(), itemId);
 
         personInfo.moveToFirst();
         String name = personInfo.getString(personInfo.getColumnIndex(ItemContract.ItemEntry.COLUMN_NAME_ITEM));
@@ -92,23 +108,18 @@ public class IndividualItemActivity extends GiftrActivity {
             thread.start();
         }
 
-        peopleView.setAdapter(new IndividualItemAdapter(pDbHelper.getReadableDatabase(), itemId));
-
-    }
-    // credit goes to http://stackoverflow.com/questions/8992964/android-load-from-url-to-bitmap
-    public static Bitmap getBitmapFromURL(String src) {
-        try {
-            URL url = new URL(src);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            return myBitmap;
-        } catch (IOException e) {
-            // Log exception
-            return null;
-        }
+        peopleAdapter = new IndividualItemAdapter(
+                pDbHelper.getReadableDatabase(),
+                itemId,
+                new IndividualItemAdapter.OnItemClickListener(){
+                    @Override
+                    public void onItemClick(int position) {
+                        Intent personIntent = new Intent(getApplicationContext(), PersonActivity.class);
+                        personIntent.putExtra("PersonID", peopleAdapter.getItemId(position));
+                    }
+                }
+        );
+        peopleView.setAdapter(peopleAdapter);
     }
 
     @Override
