@@ -41,6 +41,8 @@
         <activity android:name=".items.ItemActivity" />
         <activity android:name=".items.AddItemActivity" />
         <activity android:name=".ContactImportActivity" />
+            android:theme="@style/AppTheme"/>
+        <activity android:name=".items.IndividualItemActivity"/>
     </application>
 
 </manifest>

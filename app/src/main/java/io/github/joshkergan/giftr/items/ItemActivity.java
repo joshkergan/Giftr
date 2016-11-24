@@ -33,6 +33,6 @@ public class ItemActivity extends GiftrActivity{
     @Override
     public void onBackPressed() {
         // Go back to the calling activity
-        super.onBackPressed(); // TODO: fix this
+        super.onBackPressed();
     }
 }

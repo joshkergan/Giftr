@@ -95,6 +95,16 @@ public class AddItemActivity extends GiftrActivity {
             }
         });
 
+        Button addItemBtn = (Button) activityView.findViewById(R.id.add_item_btn);
+        addItemBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AmazonItem item = new AmazonItem(autoComplete.getText().toString(), "", "" , 0D);
+                addedItems.add(item);
+                addedItemsAdapter.add(item);
+                autoComplete.setText("");
+            }
+        });
         Button saveItemsButton = (Button) activityView.findViewById(R.id.save_button);
         saveItemsButton.setOnClickListener(new View.OnClickListener() {
             @Override

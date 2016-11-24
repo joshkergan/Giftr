@@ -97,6 +97,20 @@ public final class GiftrDbHelper extends SQLiteOpenHelper{
                 null
         );
     }
+    public Cursor getItemInfo(SQLiteDatabase db, long id) {
+        return db.query(true,
+                ItemContract.ItemEntry.TABLE_NAME,
+                new String[]{ItemContract.ItemEntry.COLUMN_NAME_ITEM,
+                        ItemContract.ItemEntry.COLUMN_NAME_PHOTO,
+                        ItemContract.ItemEntry.COLUMN_NAME_AMAZON_URL},
+                ItemContract.ItemEntry._ID + "=?",
+                new String[]{String.valueOf(id)},
+                null,
+                null,
+                null,
+                null
+        );
+    }
 
     public void createPerson(SQLiteDatabase db, String name, Bitmap image) {
         ContentValues personValues = new ContentValues();
