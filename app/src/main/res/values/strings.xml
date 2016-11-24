@@ -36,4 +36,5 @@
         See the License for the specific language governing permissions and
         limitations under the License.
     </string>
+    <string name="contact_import_button">Import Contact(s)</string>
 </resources>
