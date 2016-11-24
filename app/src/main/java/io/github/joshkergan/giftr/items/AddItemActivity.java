@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import io.github.joshkergan.giftr.BuildConfig;
 import io.github.joshkergan.giftr.GiftrActivity;
+import io.github.joshkergan.giftr.PersonActivity;
 import io.github.joshkergan.giftr.R;
 import io.github.joshkergan.giftr.db.GiftrDbHelper;
 
@@ -41,7 +42,7 @@ public class AddItemActivity extends GiftrActivity {
         final GiftrDbHelper dbHelper = GiftrDbHelper.getDbInstance(getApplicationContext());
         final View activityView = attachView(R.layout.add_item_view, this);
         Intent intent = getIntent();
-        final int personId = intent.getIntExtra("PERSON_ID", -1);
+        final long personId = intent.getLongExtra("PersonID", -1);
 
 
         final ArrayList<AmazonItem> addedItems = new ArrayList<AmazonItem>();
@@ -99,10 +100,11 @@ public class AddItemActivity extends GiftrActivity {
             @Override
             public void onClick(View v) {
                 for (AmazonItem item: addedItems) {
-                    dbHelper.addInterestToPersonById(dbHelper.getWritableDatabase(), 1, item);
+                    dbHelper.addInterestToPersonById(dbHelper.getWritableDatabase(), personId, item);
                 }
-                Intent itemsIntent = new Intent(activityView.getContext(), ItemActivity.class);
-                startActivity(itemsIntent);
+                Intent personIntent = new Intent(getApplicationContext(), PersonActivity.class);
+                personIntent.putExtra("PersonID", personId);
+                startActivity(personIntent);
             }
         });
     }
