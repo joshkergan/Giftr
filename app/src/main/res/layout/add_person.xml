@@ -4,10 +4,11 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
-              android:weightSum="1">
+              android:weightSum="1"
+              app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/contact_label"
         android:layout_width="161dp"
         android:layout_height="wrap_content"
         android:text="@string/add_contact_prompt"/>
@@ -22,15 +23,16 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/friend_image"
-        android:src="@drawable/mario"
         android:layout_width="96dp"
         android:layout_height="96dp"
         android:layout_marginStart="150dp"
+        android:src="@drawable/default_person"
         app:civ_border_color="#FF000000"
         app:civ_border_width="2dp"/>
 
     <Button
         android:id="@+id/person_create_button"
+        style="@style/Widget.AppCompat.Button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"

@@ -96,11 +96,11 @@ public final class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.View
         CircleImageView mFriendIcon;
         TextView mFriendName;
         @Nullable
-        OnItemClickListener mListner;
+        OnItemClickListener mListener;
 
         ViewHolder(ViewGroup itemView, @Nullable OnItemClickListener listener) {
             super(itemView);
-            mListner = listener;
+            mListener = listener;
             mFriendIcon = (CircleImageView) itemView.findViewById(R.id.friend_image);
             mFriendName = (TextView) itemView.findViewById(R.id.friend_name);
         }
@@ -108,8 +108,8 @@ public final class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.View
         @Override
         public void onClick(View v) {
             Log.d("RecyclerView.ViewHolder", "onClick: Person Element id: " + getAdapterPosition());
-            if (mListner != null){
-                mListner.OnItemClick(getAdapterPosition());
+            if (mListener != null){
+                mListener.OnItemClick(getAdapterPosition());
             }
         }
     }
